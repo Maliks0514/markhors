@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/markhors";
+const MONGODB_URI = process.env.MONGODB_URI ;
 
 if (!MONGODB_URI) {
   throw new Error("Missing required MONGODB_URI environment variable");
