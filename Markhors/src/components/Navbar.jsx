@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -57,17 +61,50 @@ const Navbar = () => {
           </div>
 
           {/* Right Button */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4 relative">
             <Link to="/admin-login">
               <button className="text-yellow-200 hover:text-yellow-300 font-semibold px-4 py-2 rounded-full transition duration-300 border border-yellow-200/50 hover:border-yellow-200">
                 Admin
               </button>
             </Link>
-            <Link to="/academy">
-              <button className="bg-yellow-200 hover:bg-yellow-300 text-black font-semibold px-5 py-2 rounded-full transition duration-300">
-                Join Academy
-              </button>
-            </Link>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen((prev) => !prev)}
+                  className="flex items-center gap-2 text-white/90 hover:text-white font-semibold px-5 py-2 rounded-full transition duration-300 border border-white/10 bg-white/5"
+                >
+                  Account
+                  <span className="text-xs">▾</span>
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-xl bg-black border border-white/10 shadow-xl overflow-hidden z-50">
+                    <Link
+                      to="/my-bookings"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-3 text-sm text-white hover:bg-white/5"
+                    >
+                      My Bookings
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setUserMenuOpen(false);
+                        navigate("/");
+                      }}
+                      className="w-full text-left px-4 py-3 text-sm text-yellow-200 hover:bg-white/5"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/signup">
+                <button className="bg-yellow-200 hover:bg-yellow-300 text-black font-semibold px-5 py-2 rounded-full transition duration-300">
+                  Sign Up
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -102,11 +139,33 @@ const Navbar = () => {
               </button>
             </Link>
 
-            <Link to="/academy">
-              <button className="bg-yellow-200 hover:bg-yellow-300 text-black font-semibold py-3 rounded-full mt-4 w-full">
-                Join Academy
-              </button>
-            </Link>
+            {user ? (
+              <>
+                <div className="border border-white/10 rounded-xl overflow-hidden bg-black/90">
+                  <Link to="/my-bookings" onClick={() => { setMobileMenu(false); }}>
+                    <button className="w-full text-left px-4 py-3 text-white hover:bg-white/5">
+                      My Bookings
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenu(false);
+                      navigate("/");
+                    }}
+                    className="w-full text-left px-4 py-3 text-yellow-200 hover:bg-white/5"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : (
+              <Link to="/signup">
+                <button className="bg-yellow-200 hover:bg-yellow-300 text-black font-semibold py-3 rounded-full mt-4 w-full">
+                  Sign Up
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       )}

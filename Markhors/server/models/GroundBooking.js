@@ -30,6 +30,16 @@ const groundBookingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    userEmail: {
+      type: String,
+      required: false,
+      index: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.Mixed,
+      required: false,
+      index: true,
+    },
     status: {
       type: String,
       enum: ["pending", "confirmed", "cancelled"],

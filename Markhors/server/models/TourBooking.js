@@ -1,34 +1,36 @@
 const mongoose = require("mongoose");
 
-const academyEnrollmentSchema = new mongoose.Schema(
+const tourBookingSchema = new mongoose.Schema(
   {
-    name: {
+    tourId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tour",
+      required: true,
+    },
+    tourTitle: {
       type: String,
       required: true,
     },
-    fatherName: {
+    name: {
       type: String,
       required: true,
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    idCardNumber: {
+      type: String,
+      required: true,
+      trim: true,
     },
     address: {
       type: String,
       required: true,
     },
-    contactNumber: {
-      type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
-      required: true,
-      min: 5,
-      max: 100,
-    },
-    position: {
-      type: String,
-      required: true,
-    },
-    cnicBForm: {
+    paymentReceiptUrl: {
       type: String,
       required: true,
     },
@@ -51,4 +53,4 @@ const academyEnrollmentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("AcademyEnrollment", academyEnrollmentSchema);
+module.exports = mongoose.model("TourBooking", tourBookingSchema);

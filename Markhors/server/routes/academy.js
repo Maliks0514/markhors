@@ -6,7 +6,10 @@ const router = express.Router();
 // Get all enrollments
 router.get("/", async (req, res) => {
   try {
-    const enrollments = await AcademyEnrollment.find().sort({ createdAt: -1 });
+    const { userEmail } = req.query;
+    const filter = {};
+    if (userEmail) filter.userEmail = userEmail;
+    const enrollments = await AcademyEnrollment.find(filter).sort({ createdAt: -1 });
     res.json(enrollments);
   } catch (error) {
     console.error("Error fetching enrollments:", error);
@@ -17,7 +20,7 @@ router.get("/", async (req, res) => {
 // Submit enrollment
 router.post("/", async (req, res) => {
   try {
-    const { name, fatherName, address, contactNumber, age, position, cnicBForm } = req.body;
+    const { name, fatherName, address, contactNumber, age, position, cnicBForm, userEmail, userId } = req.body;
 
     // Validate required fields
     if (!name || !fatherName || !address || !contactNumber || !age || !position || !cnicBForm) {
@@ -32,6 +35,8 @@ router.post("/", async (req, res) => {
       age: parseInt(age),
       position,
       cnicBForm,
+      userEmail: userEmail || undefined,
+      userId: userId || undefined,
     });
 
     const savedEnrollment = await newEnrollment.save();

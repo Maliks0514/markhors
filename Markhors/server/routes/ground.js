@@ -30,7 +30,10 @@ const timeRangesOverlap = (start1, end1, start2, end2) => {
 // Get all bookings
 router.get("/", async (req, res) => {
   try {
-    const bookings = await GroundBooking.find().sort({ createdAt: -1 });
+    const { userEmail } = req.query;
+    const filter = {};
+    if (userEmail) filter.userEmail = userEmail;
+    const bookings = await GroundBooking.find(filter).sort({ createdAt: -1 });
     res.json(bookings);
   } catch (error) {
     console.error("Error fetching bookings:", error);
@@ -41,7 +44,7 @@ router.get("/", async (req, res) => {
 // Create new booking
 router.post("/", upload.single("feeReceipt"), async (req, res) => {
   try {
-    const { name, cnic, contactNumber, date, timeFrom, timeTo } = req.body;
+    const { name, cnic, contactNumber, date, timeFrom, timeTo, userEmail, userId } = req.body;
 
     // Validate required fields with detailed error messages
     if (!name) {
@@ -105,6 +108,8 @@ router.post("/", upload.single("feeReceipt"), async (req, res) => {
       date: bookingDate,
       timeFrom,
       timeTo,
+      userEmail: userEmail || undefined,
+      userId: userId || undefined,
     });
 
     const savedBooking = await newBooking.save();

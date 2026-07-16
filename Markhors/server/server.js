@@ -38,9 +38,19 @@ mongoose
         console.log("🔄 Dropped old date_1_time_1 index");
       }
       
-      // Sync indexes for GroundBooking model
-      await GroundBooking.collection.syncIndexes();
-      console.log("✅ Ground Booking indexes synchronized");
+      // Sync indexes for GroundBooking model (use Model.syncIndexes())
+      if (typeof GroundBooking.syncIndexes === "function") {
+        await GroundBooking.syncIndexes();
+        console.log("✅ Ground Booking indexes synchronized");
+      } else {
+        // Fallback: use collection-level index sync if available on collection
+        if (GroundBooking.collection && typeof GroundBooking.collection.syncIndexes === "function") {
+          await GroundBooking.collection.syncIndexes();
+          console.log("✅ Ground Booking collection indexes synchronized");
+        } else {
+          console.warn("Index sync not available for GroundBooking model");
+        }
+      }
     } catch (indexError) {
       console.error("Index sync warning (non-critical):", indexError.message);
     }
@@ -55,6 +65,7 @@ app.use("/api/articles", require("./routes/articles"));
 app.use("/api/players", require("./routes/players"));
 app.use("/api/academy", require("./routes/academy"));
 app.use("/api/ground", require("./routes/ground"));
+app.use("/api/tours", require("./routes/tours"));
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

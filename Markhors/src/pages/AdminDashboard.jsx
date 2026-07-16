@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LogOut, Menu, X, BarChart3, FileText, Play, Users, Settings } from "lucide-react";
-import { videoAPI, articleAPI, playerAPI, academyAPI, groundAPI } from "../services/api";
+import { videoAPI, articleAPI, playerAPI, academyAPI, groundAPI, tourAPI } from "../services/api";
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -22,6 +22,7 @@ const AdminDashboard = () => {
     { id: "players", label: "Manage Players", icon: Users },
     { id: "academy", label: "Academy Enrollments", icon: Users },
     { id: "ground", label: "Ground Bookings", icon: Users },
+    { id: "tours", label: "Tours", icon: Settings },
     { id: "settings", label: "Settings", icon: Settings },
   ];
 
@@ -125,6 +126,7 @@ const AdminDashboard = () => {
           {activeTab === "players" && <PlayersTab />}
           {activeTab === "academy" && <AcademyEnrollmentsTab />}
           {activeTab === "ground" && <GroundBookingsTab />}
+          {activeTab === "tours" && <ToursTab />}
           {activeTab === "settings" && <SettingsTab />}
         </div>
       </div>
@@ -1330,6 +1332,272 @@ const GroundBookingsTab = () => {
                       >
                         Delete
                       </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ToursTab = () => {
+  const [tours, setTours] = React.useState([]);
+  const [bookings, setBookings] = React.useState([]);
+  const [isFormOpen, setIsFormOpen] = React.useState(false);
+  const [editingId, setEditingId] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [formData, setFormData] = React.useState({
+    title: "",
+    venueName: "",
+    description: "",
+    advancePaymentDetails: "",
+    images: [],
+  });
+  const [error, setError] = React.useState("");
+
+  React.useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const [tourData, bookingData] = await Promise.all([tourAPI.getTours(), tourAPI.getTourBookings()]);
+        setTours(Array.isArray(tourData) ? tourData : []);
+        setBookings(Array.isArray(bookingData) ? bookingData : []);
+      } catch (err) {
+        console.error("Error loading tours", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTours();
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImagesChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    setFormData((prev) => ({ ...prev, images: files }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!formData.title || !formData.venueName || !formData.description || !formData.advancePaymentDetails) {
+      setError("Please complete all tour fields.");
+      return;
+    }
+
+    try {
+      const payload = new FormData();
+      payload.append("title", formData.title);
+      payload.append("venueName", formData.venueName);
+      payload.append("description", formData.description);
+      payload.append("advancePaymentDetails", formData.advancePaymentDetails);
+
+      formData.images.forEach((image) => {
+        payload.append("images", image);
+      });
+
+      if (editingId) {
+        const updatedTour = await tourAPI.updateTour(editingId, payload);
+        setTours((prev) => prev.map((tour) => (tour._id === editingId ? updatedTour : tour)));
+      } else {
+        const createdTour = await tourAPI.createTour(payload);
+        setTours((prev) => [createdTour, ...prev]);
+      }
+
+      setFormData({ title: "", venueName: "", description: "", advancePaymentDetails: "", images: [] });
+      setIsFormOpen(false);
+      setEditingId(null);
+    } catch (err) {
+      setError(err.message || "Unable to save tour.");
+    }
+  };
+
+  const handleEdit = (tour) => {
+    setFormData({
+      title: tour.title,
+      venueName: tour.venueName,
+      description: tour.description,
+      advancePaymentDetails: tour.advancePaymentDetails,
+      images: tour.images || [],
+    });
+    setEditingId(tour._id);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this tour and its bookings?")) return;
+    try {
+      await tourAPI.deleteTour(id);
+      setTours((prev) => prev.filter((tour) => tour._id !== id));
+      setBookings((prev) => prev.filter((booking) => booking.tourId !== id));
+    } catch (err) {
+      console.error("Error deleting tour", err);
+    }
+  };
+
+  const handleBookingStatusChange = async (id, status) => {
+    try {
+      const updated = await tourAPI.updateTourBookingStatus(id, status);
+      setBookings((prev) => prev.map((booking) => (booking._id === id ? updated : booking)));
+    } catch (err) {
+      console.error("Error updating tour booking status", err);
+    }
+  };
+
+  const handleBookingDelete = async (id) => {
+    if (!window.confirm("Delete this booking?")) return;
+    try {
+      await tourAPI.deleteTourBooking(id);
+      setBookings((prev) => prev.filter((booking) => booking._id !== id));
+    } catch (err) {
+      console.error("Error deleting booking", err);
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 className="text-white text-2xl font-bold">Manage Tours</h2>
+          <p className="text-gray-400">Create tour listings and monitor tour booking requests from users.</p>
+        </div>
+        <button
+          onClick={() => {
+            setIsFormOpen(true);
+            setEditingId(null);
+            setError("");
+            setFormData({ title: "", venueName: "", description: "", advancePaymentDetails: "", images: [] });
+          }}
+          className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+        >
+          + New Tour
+        </button>
+      </div>
+
+      {isFormOpen && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
+              <h2 className="text-white text-2xl font-bold">{editingId ? "Edit Tour" : "New Tour"}</h2>
+              <button onClick={() => { setIsFormOpen(false); setEditingId(null); setError(""); }} className="text-gray-400 hover:text-white">✕</button>
+            </div>
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              {error && <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</div>}
+              <div>
+                <label className="block text-white text-sm font-semibold mb-2">Tour Title *</label>
+                <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label className="block text-white text-sm font-semibold mb-2">Venue Name *</label>
+                <input type="text" name="venueName" value={formData.venueName} onChange={handleInputChange} required className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label className="block text-white text-sm font-semibold mb-2">Description *</label>
+                <textarea name="description" value={formData.description} onChange={handleInputChange} required rows="4" className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 resize-none" />
+              </div>
+              <div>
+                <label className="block text-white text-sm font-semibold mb-2">Advance Payment Details *</label>
+                <textarea name="advancePaymentDetails" value={formData.advancePaymentDetails} onChange={handleInputChange} required rows="4" className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 resize-none" />
+              </div>
+              <div>
+                <label className="block text-white text-sm font-semibold mb-2">Tour Images</label>
+                <input type="file" multiple accept="image/*" onChange={handleImagesChange} className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 file:bg-amber-500 file:text-black file:border-0 file:rounded file:px-3 file:py-1 file:font-semibold file:cursor-pointer" />
+              </div>
+              <div className="flex gap-4 pt-4">
+                <button type="submit" className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg">{editingId ? "Update Tour" : "Create Tour"}</button>
+                <button type="button" onClick={() => { setIsFormOpen(false); setEditingId(null); setError(""); }} className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+        {loading ? (
+          <div className="p-8 text-center text-yellow-200">Loading tours...</div>
+        ) : tours.length === 0 ? (
+          <div className="p-8 text-center text-gray-400">No tours available yet.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5">
+                  <th className="px-4 py-4 text-left text-white font-semibold">Tour</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Venue</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Advance Payment</th>
+                  <th className="px-4 py-4 text-center text-white font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tours.map((tour) => (
+                  <tr key={tour._id} className="border-b border-white/10 hover:bg-white/5">
+                    <td className="px-4 py-4 text-white">{tour.title}</td>
+                    <td className="px-4 py-4 text-gray-300">{tour.venueName}</td>
+                    <td className="px-4 py-4 text-gray-300 max-w-xs truncate">{tour.advancePaymentDetails}</td>
+                    <td className="px-4 py-4 text-center">
+                      <div className="flex items-center justify-center gap-3">
+                        <button onClick={() => handleEdit(tour)} className="text-blue-400 hover:text-blue-300">Edit</button>
+                        <button onClick={() => handleDelete(tour._id)} className="text-red-400 hover:text-red-300">Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/10">
+          <h3 className="text-white text-xl font-bold">Tour Booking Requests</h3>
+        </div>
+        {bookings.length === 0 ? (
+          <div className="p-8 text-center text-gray-400">No tour booking requests yet.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5">
+                  <th className="px-4 py-4 text-left text-white font-semibold">Tour</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Name</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Phone</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">ID Card</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Address</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Receipt</th>
+                  <th className="px-4 py-4 text-left text-white font-semibold">Status</th>
+                  <th className="px-4 py-4 text-center text-white font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((booking) => (
+                  <tr key={booking._id} className="border-b border-white/10 hover:bg-white/5">
+                    <td className="px-4 py-4 text-white">{booking.tourTitle}</td>
+                    <td className="px-4 py-4 text-gray-300">{booking.name}</td>
+                    <td className="px-4 py-4 text-gray-300">{booking.phoneNumber}</td>
+                    <td className="px-4 py-4 text-gray-300">{booking.idCardNumber}</td>
+                    <td className="px-4 py-4 text-gray-300 max-w-xs truncate">{booking.address}</td>
+                    <td className="px-4 py-4">
+                      <a href={booking.paymentReceiptUrl} target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline">View</a>
+                    </td>
+                    <td className="px-4 py-4">
+                      <select value={booking.status} onChange={(e) => handleBookingStatusChange(booking._id, e.target.value)} className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm">
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                    </td>
+                    <td className="px-4 py-4 text-center">
+                      <button onClick={() => handleBookingDelete(booking._id)} className="text-red-400 hover:text-red-300 text-sm">Delete</button>
                     </td>
                   </tr>
                 ))}
