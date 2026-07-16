@@ -134,8 +134,7 @@ export const articleAPI = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(articleData),
       });
-      if (!response.ok) throw new Error("Failed to create article");
-      return await response.json();
+      return await parseResponse(response);
     } catch (error) {
       console.error("Error creating article:", error);
       throw error;
@@ -245,8 +244,7 @@ export const academyAPI = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(enrollmentData),
       });
-      if (!response.ok) throw new Error("Failed to submit enrollment");
-      return await response.json();
+      return await parseResponse(response);
     } catch (error) {
       console.error("Error submitting enrollment:", error);
       throw error;
@@ -452,9 +450,8 @@ export const groundAPI = {
         body: isFormData ? bookingData : JSON.stringify(bookingData),
       });
       console.log("Response status:", response.status);
-      const responseData = await response.json();
+      const responseData = await parseResponse(response);
       console.log("Response data:", responseData);
-      if (!response.ok) throw new Error(responseData.message || "Failed to create booking");
       return responseData;
     } catch (error) {
       console.error("Error creating booking:", error);
