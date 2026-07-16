@@ -10,14 +10,14 @@
       }
     },
     {
-      "src": "api/**/*.cjs",
+      "src": "api/[...slug].cjs",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/[...slug].cjs"
+      "dest": "api/[...slug].cjs"
     },
     {
       "handle": "filesystem"
