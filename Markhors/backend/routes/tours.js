@@ -1,29 +1,23 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
 const Tour = require("../models/Tour");
 const TourBooking = require("../models/TourBooking");
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads/tours"));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
-  },
-});
+const upload = multer({ storage: multer.memoryStorage() });
 
-const upload = multer({ storage });
+const toDataUrl = (file) => {
+  if (!file || !file.buffer) return null;
+  return `data:${file.mimetype || "application/octet-stream"};base64,${file.buffer.toString("base64")}`;
+};
 
 const buildImageUrls = (req) => {
   if (!req.files || req.files.length === 0) {
     return [];
   }
 
-  return req.files.map((file) => `${req.protocol}://${req.get("host")}/uploads/tours/${file.filename}`);
+  return req.files.map((file) => toDataUrl(file)).filter(Boolean);
 };
 
 router.get("/", async (req, res) => {
@@ -109,8 +103,7 @@ router.post("/:id/book", upload.single("paymentReceipt"), async (req, res) => {
       return res.status(400).json({ message: "Please complete all required fields and upload a payment receipt" });
     }
 
-    const paymentReceiptPath = `/uploads/tours/${req.file.filename}`;
-    const paymentReceiptUrl = `${req.protocol}://${req.get("host")}${paymentReceiptPath}`;
+    const paymentReceiptUrl = toDataUrl(req.file);
 
     const booking = new TourBooking({
       tourId: tour._id,

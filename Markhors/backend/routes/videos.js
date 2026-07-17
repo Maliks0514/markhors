@@ -1,27 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
 const Video = require("../models/Video");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.fieldname === "video") {
-      cb(null, path.join(__dirname, "../uploads/videos"));
-    } else if (file.fieldname === "thumbnail") {
-      cb(null, path.join(__dirname, "../uploads/thumbnails"));
-    } else {
-      cb(null, path.join(__dirname, "../uploads"));
-    }
-  },
-  filename: (req, file, cb) => {
-    const timestamp = Date.now();
-    const safeName = file.originalname.replace(/[^a-zA-Z0-9.-]/g, "_");
-    cb(null, `${timestamp}-${safeName}`);
-  },
-});
+const upload = multer({ storage: multer.memoryStorage() });
 
-const upload = multer({ storage });
+const toDataUrl = (file) => {
+  if (!file || !file.buffer) return null;
+  return `data:${file.mimetype || "application/octet-stream"};base64,${file.buffer.toString("base64")}`;
+};
 
 // GET all videos with optional category filter
 router.get("/", async (req, res) => {
@@ -72,12 +59,8 @@ router.post("/", upload.fields([
     const videoFile = req.files.video?.[0];
     const thumbnailFile = req.files.thumbnail?.[0];
 
-    const fullVideoUrl = videoFile
-      ? `${req.protocol}://${req.get("host")}/uploads/videos/${videoFile.filename}`
-      : req.body.videoUrl;
-    const fullThumbnailUrl = thumbnailFile
-      ? `${req.protocol}://${req.get("host")}/uploads/thumbnails/${thumbnailFile.filename}`
-      : req.body.thumbnailUrl;
+    const fullVideoUrl = toDataUrl(videoFile) || req.body.videoUrl;
+    const fullThumbnailUrl = toDataUrl(thumbnailFile) || req.body.thumbnailUrl;
 
     const video = new Video({
       title,
@@ -121,12 +104,8 @@ router.put("/:id", upload.fields([
       date,
       duration,
       description,
-      videoUrl: videoFile
-        ? `${req.protocol}://${req.get("host")}/uploads/videos/${videoFile.filename}`
-        : videoUrl,
-      thumbnailUrl: thumbnailFile
-        ? `${req.protocol}://${req.get("host")}/uploads/thumbnails/${thumbnailFile.filename}`
-        : thumbnailUrl,
+      videoUrl: toDataUrl(videoFile) || videoUrl,
+      thumbnailUrl: toDataUrl(thumbnailFile) || thumbnailUrl,
     };
 
     const video = await Video.findByIdAndUpdate(

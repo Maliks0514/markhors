@@ -1,21 +1,15 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
 const GroundBooking = require("../models/GroundBooking");
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
-  },
-});
+const upload = multer({ storage: multer.memoryStorage() });
 
-const upload = multer({ storage });
+const toDataUrl = (file) => {
+  if (!file || !file.buffer) return null;
+  return `data:${file.mimetype || "application/octet-stream"};base64,${file.buffer.toString("base64")}`;
+};
 
 // Helper function to check if two time ranges overlap
 const timeRangesOverlap = (start1, end1, start2, end2) => {
@@ -75,8 +69,7 @@ router.post("/", upload.single("feeReceipt"), async (req, res) => {
     }
 
     const bookingDate = new Date(date);
-    const feeReceiptPath = `/uploads/${req.file.filename}`;
-    const feeReceiptUrl = `${req.protocol}://${req.get("host")}${feeReceiptPath}`;
+    const feeReceiptUrl = toDataUrl(req.file);
 
     // Check for overlapping bookings on the same date with same time range
     const bookingDateStart = new Date(bookingDate);
