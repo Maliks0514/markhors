@@ -15,17 +15,20 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/markhors";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const GroundBooking = require("./models/GroundBooking");
 
-mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(async () => {
-    console.log("✅ Connected to MongoDB successfully");
+if (!MONGODB_URI) {
+  console.error("❌ MONGODB_URI is not set. Add it to backend/.env for production deployment.");
+} else {
+  mongoose
+    .connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(async () => {
+      console.log("✅ Connected to MongoDB successfully");
     
     // Drop old indexes and sync new ones
     try {
@@ -50,14 +53,15 @@ mongoose
         } else {
           console.warn("Index sync not available for GroundBooking model");
         }
+        }
+      } catch (indexError) {
+        console.error("Index sync warning (non-critical):", indexError.message);
       }
-    } catch (indexError) {
-      console.error("Index sync warning (non-critical):", indexError.message);
-    }
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB connection error:", err.message);
-  });
+    })
+    .catch((err) => {
+      console.error("❌ MongoDB connection error:", err.message);
+    });
+}
 
 // Routes
 app.use("/api/videos", require("./routes/videos"));
@@ -89,6 +93,10 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
