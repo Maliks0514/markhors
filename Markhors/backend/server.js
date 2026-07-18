@@ -88,7 +88,24 @@ app.use("/api/academy", require("./routes/academy"));
 app.use("/api/ground", require("./routes/ground"));
 app.use("/api/tours", require("./routes/tours"));
 
-// Health check endpoint
+// API root + health endpoints
+app.get("/", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Chitral Markhors backend is running",
+    docs: "Use /api/health for the health check endpoint",
+  });
+});
+
+app.get("/api", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Chitral Markhors API root",
+    health: "/api/health",
+    resources: ["/api/videos", "/api/articles", "/api/players", "/api/academy", "/api/ground", "/api/tours"],
+  });
+});
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "OK",
@@ -105,7 +122,10 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
+  res.status(404).json({
+    error: "Route not found",
+    message: "Use /api/health to verify the backend or /api for available endpoints",
+  });
 });
 
 const PORT = process.env.PORT || 5000;
