@@ -6,7 +6,7 @@ const getImageUrl = (image) => {
   if (!image) return "/main-banner.png";
   if (/^https?:\/\//i.test(image)) return image;
   if (image.startsWith("/uploads/")) {
-    const apiBaseUrl = (import.meta.env.VITE_API_URL || import.meta.env.REACT_APP_API_URL || "http://localhost:5000/api").replace(/\/$/, "");
+    const apiBaseUrl = (import.meta.env.VITE_API_URL || import.meta.env.REACT_APP_API_URL || "https://your-backend-project.vercel.app/api").replace(/\/$/, "");
     const baseUrl = apiBaseUrl.replace(/\/api$/, "");
     return `${baseUrl}${image}`;
   }

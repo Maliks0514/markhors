@@ -7,61 +7,78 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
+const MONGODB_URI = process.env.MONGODB_URI;
+const GroundBooking = require("./models/GroundBooking");
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(",") || true,
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.set("trust proxy", 1);
 
-// MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI;
+let connectPromise = null;
 
-const GroundBooking = require("./models/GroundBooking");
+const connectToMongo = async () => {
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not set. Add it to backend/.env for production deployment.");
+  }
 
-if (!MONGODB_URI) {
-  console.error("❌ MONGODB_URI is not set. Add it to backend/.env for production deployment.");
-} else {
-  mongoose
-    .connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(async () => {
-      console.log("✅ Connected to MongoDB successfully");
-    
-    // Drop old indexes and sync new ones
-    try {
-      const collection = mongoose.connection.collection("groundbookings");
-      const indexes = await collection.getIndexes();
-      
-      // Drop the old date_1_time_1 index if it exists
-      if (indexes.date_1_time_1) {
-        await collection.dropIndex("date_1_time_1");
-        console.log("🔄 Dropped old date_1_time_1 index");
-      }
-      
-      // Sync indexes for GroundBooking model (use Model.syncIndexes())
-      if (typeof GroundBooking.syncIndexes === "function") {
-        await GroundBooking.syncIndexes();
-        console.log("✅ Ground Booking indexes synchronized");
-      } else {
-        // Fallback: use collection-level index sync if available on collection
-        if (GroundBooking.collection && typeof GroundBooking.collection.syncIndexes === "function") {
-          await GroundBooking.collection.syncIndexes();
-          console.log("✅ Ground Booking collection indexes synchronized");
-        } else {
-          console.warn("Index sync not available for GroundBooking model");
+  if (mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  if (!connectPromise) {
+    connectPromise = mongoose
+      .connect(MONGODB_URI, {
+        serverSelectionTimeoutMS: 5000,
+      })
+      .then(async () => {
+        console.log("✅ Connected to MongoDB successfully");
+
+        try {
+          const collection = mongoose.connection.collection("groundbookings");
+          const indexes = await collection.getIndexes();
+
+          if (indexes.date_1_time_1) {
+            await collection.dropIndex("date_1_time_1");
+            console.log("🔄 Dropped old date_1_time_1 index");
+          }
+
+          if (typeof GroundBooking.syncIndexes === "function") {
+            await GroundBooking.syncIndexes();
+            console.log("✅ Ground Booking indexes synchronized");
+          } else if (
+            GroundBooking.collection &&
+            typeof GroundBooking.collection.syncIndexes === "function"
+          ) {
+            await GroundBooking.collection.syncIndexes();
+            console.log("✅ Ground Booking collection indexes synchronized");
+          } else {
+            console.warn("Index sync not available for GroundBooking model");
+          }
+        } catch (indexError) {
+          console.error("Index sync warning (non-critical):", indexError.message);
         }
-        }
-      } catch (indexError) {
-        console.error("Index sync warning (non-critical):", indexError.message);
-      }
-    })
-    .catch((err) => {
-      console.error("❌ MongoDB connection error:", err.message);
-    });
-}
+      });
+  }
+
+  await connectPromise;
+};
+
+app.use(async (req, res, next) => {
+  try {
+    await connectToMongo();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Routes
 app.use("/api/videos", require("./routes/videos"));
@@ -93,7 +110,7 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-if (require.main === module) {
+if (process.env.VERCEL !== "1" && require.main === module) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
