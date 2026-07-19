@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const slides = [
   {
-    image: "/main-banner.png",
+    image: "/8.jpg",
     title: "Chitral Markhors",
     subtitle: "Strength From The Mountains",
     button1: "Join The Pride",
@@ -10,7 +10,7 @@ const slides = [
   },
 
   {
-    image: "/main-banner.png",
+    image: "/9.jpg",
     title: "Our Home Our Pride",
     subtitle: "Representing Chitral With Passion",
     button1: "Discover More",
@@ -18,7 +18,7 @@ const slides = [
   },
 
   {
-    image: "/main-banner.png",
+    image: "/11.jpg",
     title: "One Team One Dream",
     subtitle: "Together We Fight Together We Win",
     button1: "Shop Kits",
