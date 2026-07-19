@@ -1,21 +1,15 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
 const Player = require("../models/Player");
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
   },
 });
-
-const upload = multer({ storage });
 
 router.get("/", async (req, res) => {
   try {
@@ -30,12 +24,18 @@ router.get("/", async (req, res) => {
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { name, position, description } = req.body;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : "/main-banner.png";
-    const imageUrl = `${req.protocol}://${req.get("host")}${imagePath}`;
+
+    if (!name || !description) {
+      return res.status(400).json({ message: "Name and description are required" });
+    }
+
+    const imageUrl = req.file
+      ? `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
+      : req.body.image || req.body.imageUrl || "/main-banner.png";
 
     const newPlayer = new Player({
       name,
-      position,
+      position: position || "Player",
       description,
       imageUrl,
     });

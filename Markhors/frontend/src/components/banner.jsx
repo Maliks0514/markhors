@@ -5,24 +5,21 @@ const slides = [
     image: "/8.jpg",
     title: "Chitral Markhors",
     subtitle: "Strength From The Mountains",
-    button1: "Join The Pride",
-    button2: "Explore Team",
+   
   },
 
   {
     image: "/9.jpg",
     title: "Our Home Our Pride",
     subtitle: "Representing Chitral With Passion",
-    button1: "Discover More",
-    button2: "Community",
+  
   },
 
   {
     image: "/11.jpg",
     title: "One Team One Dream",
     subtitle: "Together We Fight Together We Win",
-    button1: "Shop Kits",
-    button2: "Players",
+    
   },
 ];
 
@@ -73,15 +70,7 @@ const Banner = () => {
                     {slide.subtitle}
                   </p>
 
-                  <div className="flex flex-wrap gap-4 mt-8">
-                    <button className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold px-8 py-3 rounded-full transition duration-300">
-                      {slide.button1}
-                    </button>
-
-                    <button className="border border-white text-white hover:bg-white hover:text-black px-8 py-3 rounded-full transition duration-300">
-                      {slide.button2}
-                    </button>
-                  </div>
+              
                 </div>
 
               </div>

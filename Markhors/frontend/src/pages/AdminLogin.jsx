@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LogIn } from "lucide-react";
+import logo from "../assets/logo.jpg";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
@@ -35,7 +36,7 @@ const AdminLogin = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <img
-              src="/logo.png"
+              src={logo}
               alt="Chitral Markhors"
               className="w-16 h-16 object-contain"
             />

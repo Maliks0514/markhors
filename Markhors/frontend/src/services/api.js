@@ -177,7 +177,7 @@ export const playerAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/players`);
       if (!response.ok) throw new Error("Failed to fetch players");
-      return await response.json();
+      return await parseResponse(response);
     } catch (error) {
       console.error("Error fetching players:", error);
       return [];
@@ -192,8 +192,7 @@ export const playerAPI = {
         headers: isFormData ? undefined : { "Content-Type": "application/json" },
         body: isFormData ? playerData : JSON.stringify(playerData),
       });
-      if (!response.ok) throw new Error("Failed to create player");
-      return await response.json();
+      return await parseResponse(response);
     } catch (error) {
       console.error("Error creating player:", error);
       throw error;
@@ -205,8 +204,7 @@ export const playerAPI = {
       const response = await fetch(`${API_BASE_URL}/players/${id}`, {
         method: "DELETE",
       });
-      if (!response.ok) throw new Error("Failed to delete player");
-      return await response.json();
+      return await parseResponse(response);
     } catch (error) {
       console.error("Error deleting player:", error);
       throw error;
