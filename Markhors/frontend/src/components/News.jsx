@@ -3,11 +3,8 @@ import { Link } from "react-router-dom";
 
 const News = () => {
   return (
-    <section className="relative h-126 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/11.jpg')" }}
-      />
+    <section className="relative h-126 mt-5 overflow-hidden">
+     
       <div className="absolute inset-0 bg-black/65" />
 
       <div className="relative z-10 h-full flex items-center">
