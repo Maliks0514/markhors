@@ -32,7 +32,7 @@ const Navbar = () => {
             <img
               src={Logo}
               alt="Chitral Markhors"
-              className="w-12 h-12 object-contain"
+              className="w-14 h-14 object-contain"
             />
 
             <div>
