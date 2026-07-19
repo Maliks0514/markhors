@@ -6,6 +6,7 @@ import JoinAcademy from '../components/JoinAcademy'
 import GroundBookingHero from '../components/GroundBookingHero'
 import PlayersHero from '../components/PlayersHero'
 import ToursHero from '../components/ToursHero'
+import FooterSection from '../components/FooterSection'
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
         <GroundBookingHero/>
         <PlayersHero/>
         <ToursHero/>
+        <FooterSection/>
     </div>
   )
 }
