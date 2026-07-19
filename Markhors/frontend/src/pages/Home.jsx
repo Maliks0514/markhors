@@ -5,6 +5,7 @@ import News from '../components/News'
 import JoinAcademy from '../components/JoinAcademy'
 import GroundBookingHero from '../components/GroundBookingHero'
 import PlayersHero from '../components/PlayersHero'
+import ToursHero from '../components/ToursHero'
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <JoinAcademy/>
         <GroundBookingHero/>
         <PlayersHero/>
+        <ToursHero/>
     </div>
   )
 }
