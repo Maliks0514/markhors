@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Logo from "../assets/logo.jpg";
 
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -29,7 +30,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img
-              src="/logo.png"
+              src={Logo}
               alt="Chitral Markhors"
               className="w-12 h-12 object-contain"
             />
