@@ -4,6 +4,7 @@ import Banner from '../components/banner'
 import News from '../components/News'
 import JoinAcademy from '../components/JoinAcademy'
 import GroundBookingHero from '../components/GroundBookingHero'
+import PlayersHero from '../components/PlayersHero'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
         <News/>
         <JoinAcademy/>
         <GroundBookingHero/>
+        <PlayersHero/>
     </div>
   )
 }
