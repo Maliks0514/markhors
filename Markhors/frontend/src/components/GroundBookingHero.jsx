@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const JoinAcademy = () => {
+const GroundBookingHero = () => {
   return (
     <section className="relative h-126 overflow-hidden">
       <div className="absolute inset-0 bg-black" />
@@ -11,27 +11,27 @@ const JoinAcademy = () => {
           <div className="grid lg:grid-cols-[1.2fr_0.8fr] items-center gap-10">
             <div className="max-w-2xl">
               <p className="text-yellow-200 text-sm md:text-base uppercase tracking-[3px] mb-4">
-                Build your future
+                Reserve your slot
               </p>
               <h2 className="text-white text-4xl md:text-6xl font-extrabold uppercase leading-tight">
-                Join Academy
+                Ground Booking
               </h2>
               <p className="text-white/90 text-lg md:text-2xl mt-4 uppercase tracking-[2px]">
-                Train with discipline, grow with confidence, and become part of the Markhors pathway.
+                Secure your training ground, book your session, and support the club’s match preparation.
               </p>
 
               <Link
-                to="/academy"
+                to="/ground-booking"
                 className="inline-flex items-center mt-8 bg-yellow-200 hover:bg-yellow-300 text-black font-bold px-6 py-3 rounded-full transition-colors duration-300"
               >
-                Join Now
+                Book Ground
               </Link>
             </div>
 
             <div className="flex justify-center lg:justify-end">
               <img
-                src="/13.jpg"
-                alt="Chitral Markhors academy"
+                src="/9.jpg"
+                alt="Chitral Markhors ground booking"
                 className="w-full max-w-md lg:max-w-lg h-105 object-cover rounded-2xl shadow-2xl"
               />
             </div>
@@ -42,4 +42,4 @@ const JoinAcademy = () => {
   );
 };
 
-export default JoinAcademy;
+export default GroundBookingHero;
