@@ -28,7 +28,7 @@ const FooterSection = () => {
           <div className="flex flex-col gap-2 text-sm text-gray-300">
             <a href="mailto:contact@markhors.com" className="hover:text-yellow-200">contact@markhors.com</a>
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Instagram</a>
-            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Facebook</a>
+            <a href="https://www.facebook.com/share/1G2HT64fFu/" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Facebook</a>
             <a href="https://www.youtube.com" target="_blank" rel="noreferrer" className="hover:text-yellow-200">YouTube</a>
           </div>
         </div>
