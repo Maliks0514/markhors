@@ -32,7 +32,7 @@ const JoinAcademy = () => {
               <img
                 src="/13.jpg"
                 alt="Chitral Markhors academy"
-                className="w-full max-w-md lg:max-w-lg h-105 object-cover rounded-2xl shadow-2xl"
+                className="w-full max-w-md lg:max-w-lg h-90 object-cover rounded-2xl shadow-2xl"
               />
             </div>
           </div>
