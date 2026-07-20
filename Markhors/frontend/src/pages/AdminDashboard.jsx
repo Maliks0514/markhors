@@ -28,11 +28,19 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-black flex">
-      {/* Sidebar */}
+      {/* Mobile Sidebar Overlay */}
       <div
-        className={`fixed lg:static w-64 h-screen bg-white/5 border-r border-white/10 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-30 transition-opacity duration-300 lg:hidden ${
+          sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] h-screen bg-black border-r border-white/10 shadow-2xl transform transition-transform duration-300 z-40 lg:static lg:w-64 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } z-40`}
+        }`}
       >
         {/* Sidebar Header */}
         <div className="p-6 border-b border-white/10">
@@ -83,7 +91,7 @@ const AdminDashboard = () => {
             Logout
           </button>
         </div>
-      </div>
+      </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -1610,39 +1618,5 @@ const ToursTab = () => {
   );
 };
 
-const SettingsTab = () => {
-  return (
-    <div>
-      <h2 className="text-white text-2xl font-bold mb-6">Settings</h2>
-      <div className="max-w-2xl space-y-6">
-        <div className="bg-white/5 border border-white/10 rounded-lg p-6">
-          <h3 className="text-white font-bold mb-4">General Settings</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-300 text-sm mb-2">
-                Site Title
-              </label>
-              <input
-                type="text"
-                defaultValue="Chitral Markhors"
-                className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-300 text-sm mb-2">
-                Site Description
-              </label>
-              <textarea
-                defaultValue="Chitral Markhors Football Club"
-                rows="3"
-                className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 resize-none"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default AdminDashboard;
