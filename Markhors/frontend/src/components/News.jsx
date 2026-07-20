@@ -32,7 +32,7 @@ const News = () => {
               <img
                 src="/logo.jpg"
                 alt="Chitral Markhors logo"
-                className="w-24 sm:w-32 md:w-52 lg:w-96 object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.35)]"
+                className="w-24 sm:w-32 md:w-52 lg:w-80 object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.35)]"
               />
             </div>
           </div>
