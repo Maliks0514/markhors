@@ -43,7 +43,7 @@ const AdminDashboard = () => {
         }`}
       >
         {/* Sidebar Header */}
-        <div className="p-6 border-b border-white/10">
+        <div className="p-6 border-b border-white/10 relative">
           <div className="flex items-center gap-3">
             <img
               src="/logo.png"
@@ -55,6 +55,13 @@ const AdminDashboard = () => {
               <p className="text-amber-400 text-xs">Control Panel</p>
             </div>
           </div>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden absolute top-3 right-3 p-2 rounded-md text-white/90 hover:bg-white/5"
+            aria-label="Close sidebar"
+          >
+            <X size={18} />
+          </button>
         </div>
 
         {/* Navigation Menu */}
@@ -97,6 +104,18 @@ const AdminDashboard = () => {
       <div className="flex-1 flex flex-col">
         {/* Top Header */}
         <div className="bg-white/5 border-b border-white/10 px-4 py-4 sm:px-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+          {/* Mobile menu button + title */}
+          <div className="flex items-center gap-3">
+            <button
+              className="lg:hidden text-white/90 p-2 rounded-md hover:bg-white/5"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
+            >
+              <Menu size={20} />
+            </button>
+            <h1 className="text-white font-bold text-lg">Admin Dashboard</h1>
+          </div>
 
           {/* User Info & Logout */}
           <div className="hidden lg:flex items-center gap-4">
