@@ -96,7 +96,7 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Header */}
-        <div className="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+        <div className="bg-white/5 border-b border-white/10 px-4 py-4 sm:px-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -127,7 +127,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto p-4 sm:p-6">
           {activeTab === "overview" && <OverviewTab />}
           {activeTab === "news" && <NewsTab />}
           {activeTab === "videos" && <VideosTab />}
@@ -369,11 +369,11 @@ const NewsTab = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <h2 className="text-white text-2xl font-bold">Manage News</h2>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
         >
           + New Article
         </button>
@@ -381,7 +381,7 @@ const NewsTab = () => {
 
       {/* Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
               <h2 className="text-white text-2xl font-bold">
@@ -491,17 +491,17 @@ const NewsTab = () => {
                 />
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg"
+                  className="w-full sm:flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg"
                 >
                   {editingId ? "Update" : "Create"}
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
+                  className="w-full sm:flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
                 >
                   Cancel
                 </button>
@@ -513,53 +513,35 @@ const NewsTab = () => {
 
       {/* Articles Table */}
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-white/10 bg-white/5">
-              <th className="px-6 py-4 text-left text-white font-semibold">
-                Title
-              </th>
-              <th className="px-6 py-4 text-left text-white font-semibold">
-                Category
-              </th>
-              <th className="px-6 py-4 text-left text-white font-semibold">
-                Date
-              </th>
-              <th className="px-6 py-4 text-center text-white font-semibold">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {articles.map((article) => (
-              <tr key={article._id} className="border-b border-white/10 hover:bg-white/5">
-                <td className="px-6 py-4 text-white">{article.title}</td>
-                <td className="px-6 py-4">
-                  <span className="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full">
-                    {article.category}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-gray-300">{article.date}</td>
-                <td className="px-6 py-4 text-center">
-                  <div className="flex items-center justify-center gap-3">
-                    <button
-                      onClick={() => handleEdit(article)}
-                      className="text-blue-400 hover:text-blue-300"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(article._id)}
-                      className="text-red-400 hover:text-red-300"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-175 w-full text-sm sm:text-base">
+            <thead>
+              <tr className="border-b border-white/10 bg-white/5">
+                <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Title</th>
+                <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Category</th>
+                <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Date</th>
+                <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {articles.map((article) => (
+                <tr key={article._id} className="border-b border-white/10 hover:bg-white/5">
+                  <td className="px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">{article.title}</td>
+                  <td className="px-3 py-3 sm:px-6 sm:py-4">
+                    <span className="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full">{article.category}</span>
+                  </td>
+                  <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{article.date}</td>
+                  <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
+                    <div className="flex items-center justify-center gap-3">
+                      <button onClick={() => handleEdit(article)} className="text-blue-400 hover:text-blue-300">Edit</button>
+                      <button onClick={() => handleDelete(article._id)} className="text-red-400 hover:text-red-300">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -727,11 +709,11 @@ const VideosTab = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <h2 className="text-white text-2xl font-bold">Manage Videos</h2>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
         >
           + New Video
         </button>
@@ -739,7 +721,7 @@ const VideosTab = () => {
 
       {/* Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
               <h2 className="text-white text-2xl font-bold">
@@ -864,18 +846,18 @@ const VideosTab = () => {
                 />
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <button
                   type="submit"
                   disabled={!formData.videoUrl || !formData.thumbnailUrl}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-black font-bold py-2 rounded-lg transition-colors"
+                  className="w-full sm:flex-1 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-black font-bold py-2 rounded-lg transition-colors"
                 >
                   {editingId ? "Update" : "Create"}
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
+                  className="w-full sm:flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
                 >
                   Cancel
                 </button>
@@ -887,21 +869,22 @@ const VideosTab = () => {
 
       {/* Videos Table */}
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+        <table className="min-w-175 w-full text-sm sm:text-base">
           <thead>
             <tr className="border-b border-white/10 bg-white/5">
-              <th className="px-6 py-4 text-left text-white font-semibold">Thumbnail</th>
-              <th className="px-6 py-4 text-left text-white font-semibold">Title</th>
-              <th className="px-6 py-4 text-left text-white font-semibold">
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Thumbnail</th>
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Title</th>
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">
                 Category
               </th>
-              <th className="px-6 py-4 text-left text-white font-semibold">
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">
                 Date
               </th>
-              <th className="px-6 py-4 text-left text-white font-semibold">
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">
                 Duration
               </th>
-              <th className="px-6 py-4 text-center text-white font-semibold">
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">
                 Actions
               </th>
             </tr>
@@ -916,15 +899,15 @@ const VideosTab = () => {
                     className="w-12 h-12 rounded object-cover"
                   />
                 </td>
-                <td className="px-6 py-4 text-white">{video.title}</td>
-                <td className="px-6 py-4">
+                <td className="px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">{video.title}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4">
                   <span className="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full">
                     {video.category}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-gray-300">{video.date}</td>
-                <td className="px-6 py-4 text-gray-300">{video.duration}</td>
-                <td className="px-6 py-4 text-center">
+                <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{video.date}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{video.duration}</td>
+                <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
                   <div className="flex items-center justify-center gap-3">
                     <button
                       onClick={() => handleEdit(video)}
@@ -944,6 +927,7 @@ const VideosTab = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
@@ -1026,21 +1010,21 @@ const PlayersTab = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
           <h2 className="text-white text-2xl font-bold">Manage Players</h2>
           <p className="text-gray-400">Add new squad members and remove players from the roster.</p>
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full lg:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
         >
           + New Player
         </button>
       </div>
 
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
               <h2 className="text-white text-2xl font-bold">New Player</h2>
@@ -1106,10 +1090,10 @@ const PlayersTab = () => {
                 />
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg"
+                  className="w-full sm:flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg"
                 >
                   Add Player
                 </button>
@@ -1119,7 +1103,7 @@ const PlayersTab = () => {
                     setIsFormOpen(false);
                     setError("");
                   }}
-                  className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
+                  className="w-full sm:flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
                 >
                   Cancel
                 </button>
@@ -1136,19 +1120,19 @@ const PlayersTab = () => {
           <div className="p-8 text-center text-gray-400">No players added yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="min-w-175 w-full text-sm sm:text-base">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-6 py-4 text-left text-white font-semibold">Player</th>
-                  <th className="px-6 py-4 text-left text-white font-semibold">Position</th>
-                  <th className="px-6 py-4 text-left text-white font-semibold">Description</th>
-                  <th className="px-6 py-4 text-center text-white font-semibold">Actions</th>
+                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Player</th>
+                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Position</th>
+                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Description</th>
+                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {players.map((player) => (
                   <tr key={player._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-6 py-4 flex items-center gap-4">
+                    <td className="px-3 py-3 sm:px-6 sm:py-4 flex items-center gap-4">
                       <img
                         src={player.imageUrl}
                         alt={player.name}
@@ -1158,9 +1142,9 @@ const PlayersTab = () => {
                         <p className="text-white font-semibold">{player.name}</p>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-300">{player.position || "Player"}</td>
-                    <td className="px-6 py-4 text-gray-300">{player.description}</td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{player.position || "Player"}</td>
+                    <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300 max-w-65 wrap-break-word">{player.description}</td>
+                    <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
                       <button
                         onClick={() => handleDelete(player._id)}
                         className="text-red-400 hover:text-red-300"
@@ -1234,28 +1218,28 @@ const AcademyEnrollmentsTab = () => {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-4 py-4 text-left text-white font-semibold">Name</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Father's Name</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Contact</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Position</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Age</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">CNIC/B-Form</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Address</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Status</th>
-                  <th className="px-4 py-4 text-center text-white font-semibold">Actions</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Father's Name</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Contact</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Position</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Age</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC/B-Form</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Address</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {enrollments.map((enrollment) => (
                   <tr key={enrollment._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-4 py-4 text-white">{enrollment.name}</td>
-                    <td className="px-4 py-4 text-gray-300">{enrollment.fatherName}</td>
-                    <td className="px-4 py-4 text-gray-300">{enrollment.contactNumber}</td>
-                    <td className="px-4 py-4 text-gray-300">{enrollment.position}</td>
-                    <td className="px-4 py-4 text-gray-300">{enrollment.age}</td>
-                    <td className="px-4 py-4 text-gray-300">{enrollment.cnicBForm}</td>
-                    <td className="px-4 py-4 text-gray-300 max-w-xs truncate">{enrollment.address}</td>
-                    <td className="px-4 py-4">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{enrollment.name}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.fatherName}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.contactNumber}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.position}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.age}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.cnicBForm}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-45 wrap-break-word">{enrollment.address}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4">
                       <select
                         value={enrollment.status}
                         onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
@@ -1337,32 +1321,32 @@ const GroundBookingsTab = () => {
           <div className="p-8 text-center text-gray-400">No bookings yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="min-w-[980px] w-full text-xs sm:text-sm">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-4 py-4 text-left text-white font-semibold">Name</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">CNIC</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Contact</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Date</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Time</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Receipt</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Status</th>
-                  <th className="px-4 py-4 text-center text-white font-semibold">Actions</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Contact</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Date</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Time</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Receipt</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {bookings.map((booking) => (
                   <tr key={booking._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-4 py-4 text-white">{booking.name}</td>
-                    <td className="px-4 py-4 text-gray-300">{booking.cnic}</td>
-                    <td className="px-4 py-4 text-gray-300">{booking.contactNumber}</td>
-                    <td className="px-4 py-4 text-gray-300">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{booking.name}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.cnic}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.contactNumber}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
                       {new Date(booking.date).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-4 text-gray-300">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
                       {booking.timeFrom} - {booking.timeTo}
                     </td>
-                    <td className="px-4 py-4">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4">
                       <a
                         href={booking.feeReceiptUrl}
                         target="_blank"
@@ -1372,7 +1356,7 @@ const GroundBookingsTab = () => {
                         View Receipt
                       </a>
                     </td>
-                    <td className="px-4 py-4">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4">
                       <select
                         value={booking.status}
                         onChange={(e) => handleStatusChange(booking._id, e.target.value)}
@@ -1523,7 +1507,7 @@ const ToursTab = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-white text-2xl font-bold">Manage Tours</h2>
           <p className="text-gray-400">Create tour listings and monitor tour booking requests from users.</p>
@@ -1535,14 +1519,14 @@ const ToursTab = () => {
             setError("");
             setFormData({ title: "", venueName: "", description: "", advancePaymentDetails: "", images: [] });
           }}
-          className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full lg:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
         >
           + New Tour
         </button>
       </div>
 
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
               <h2 className="text-white text-2xl font-bold">{editingId ? "Edit Tour" : "New Tour"}</h2>
@@ -1570,9 +1554,9 @@ const ToursTab = () => {
                 <label className="block text-white text-sm font-semibold mb-2">Tour Images</label>
                 <input type="file" multiple accept="image/*" onChange={handleImagesChange} className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 file:bg-amber-500 file:text-black file:border-0 file:rounded file:px-3 file:py-1 file:font-semibold file:cursor-pointer" />
               </div>
-              <div className="flex gap-4 pt-4">
-                <button type="submit" className="flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg">{editingId ? "Update Tour" : "Create Tour"}</button>
-                <button type="button" onClick={() => { setIsFormOpen(false); setEditingId(null); setError(""); }} className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg">Cancel</button>
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <button type="submit" className="w-full sm:flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg">{editingId ? "Update Tour" : "Create Tour"}</button>
+                <button type="button" onClick={() => { setIsFormOpen(false); setEditingId(null); setError(""); }} className="w-full sm:flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg">Cancel</button>
               </div>
             </form>
           </div>
@@ -1589,19 +1573,19 @@ const ToursTab = () => {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-4 py-4 text-left text-white font-semibold">Tour</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Venue</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Advance Payment</th>
-                  <th className="px-4 py-4 text-center text-white font-semibold">Actions</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Tour</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Venue</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Advance Payment</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {tours.map((tour) => (
                   <tr key={tour._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-4 py-4 text-white">{tour.title}</td>
-                    <td className="px-4 py-4 text-gray-300">{tour.venueName}</td>
-                    <td className="px-4 py-4 text-gray-300 max-w-xs truncate">{tour.advancePaymentDetails}</td>
-                    <td className="px-4 py-4 text-center">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{tour.title}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{tour.venueName}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-55 wrap-break-word">{tour.advancePaymentDetails}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-center">
                       <div className="flex items-center justify-center gap-3">
                         <button onClick={() => handleEdit(tour)} className="text-blue-400 hover:text-blue-300">Edit</button>
                         <button onClick={() => handleDelete(tour._id)} className="text-red-400 hover:text-red-300">Delete</button>
@@ -1626,35 +1610,35 @@ const ToursTab = () => {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-4 py-4 text-left text-white font-semibold">Tour</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Name</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Phone</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">ID Card</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Address</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Receipt</th>
-                  <th className="px-4 py-4 text-left text-white font-semibold">Status</th>
-                  <th className="px-4 py-4 text-center text-white font-semibold">Actions</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Tour</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Phone</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">ID Card</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Address</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Receipt</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
+                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {bookings.map((booking) => (
                   <tr key={booking._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-4 py-4 text-white">{booking.tourTitle}</td>
-                    <td className="px-4 py-4 text-gray-300">{booking.name}</td>
-                    <td className="px-4 py-4 text-gray-300">{booking.phoneNumber}</td>
-                    <td className="px-4 py-4 text-gray-300">{booking.idCardNumber}</td>
-                    <td className="px-4 py-4 text-gray-300 max-w-xs truncate">{booking.address}</td>
-                    <td className="px-4 py-4">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{booking.tourTitle}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.name}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.phoneNumber}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.idCardNumber}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-45 wrap-break-word">{booking.address}</td>
+                    <td className="px-3 py-3 sm:px-4 sm:py-4">
                       <a href={booking.paymentReceiptUrl} target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline">View</a>
                     </td>
-                    <td className="px-4 py-4">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4">
                       <select value={booking.status} onChange={(e) => handleBookingStatusChange(booking._id, e.target.value)} className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm">
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
                       </select>
                     </td>
-                    <td className="px-4 py-4 text-center">
+                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-center">
                       <button onClick={() => handleBookingDelete(booking._id)} className="text-red-400 hover:text-red-300 text-sm">Delete</button>
                     </td>
                   </tr>
