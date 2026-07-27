@@ -65,7 +65,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="p-4 space-y-2">
+        <nav className="p-3 sm:p-4 space-y-2 overflow-y-auto pb-28">
           {menuItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -75,14 +75,14 @@ const AdminDashboard = () => {
                   setActiveTab(item.id);
                   setSidebarOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                className={`w-full flex items-center justify-start gap-2 sm:gap-3 min-h-[44px] px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg text-left transition-all whitespace-normal ${
                   activeTab === item.id
-                    ? "bg-amber-500/20 border border-amber-500/50 text-amber-400"
+                    ? "bg-amber-500/20 border border-amber-500/50 text-amber-400 shadow-sm"
                     : "text-gray-300 hover:text-white hover:bg-white/10"
                 }`}
               >
-                <Icon size={20} />
-                <span className="font-medium">{item.label}</span>
+                <Icon size={18} className="shrink-0" />
+                <span className="text-sm sm:text-base font-medium leading-tight">{item.label}</span>
               </button>
             );
           })}
@@ -1243,55 +1243,99 @@ const AcademyEnrollmentsTab = () => {
         ) : enrollments.length === 0 ? (
           <div className="p-8 text-center text-gray-400">No enrollments yet.</div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Father's Name</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Contact</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Position</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Age</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC/B-Form</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Address</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {enrollments.map((enrollment) => (
-                  <tr key={enrollment._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{enrollment.name}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.fatherName}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.contactNumber}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.position}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.age}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.cnicBForm}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-45 wrap-break-word">{enrollment.address}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4">
-                      <select
-                        value={enrollment.status}
-                        onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
-                        className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                      </select>
-                    </td>
-                    <td className="px-4 py-4 text-center">
-                      <button
-                        onClick={() => handleDelete(enrollment._id)}
-                        className="text-red-400 hover:text-red-300 text-sm"
-                      >
-                        Delete
-                      </button>
-                    </td>
+          <>
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5">
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Father's Name</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Contact</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Position</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Age</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC/B-Form</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Address</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {enrollments.map((enrollment) => (
+                    <tr key={enrollment._id} className="border-b border-white/10 hover:bg-white/5">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{enrollment.name}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.fatherName}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.contactNumber}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.position}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.age}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{enrollment.cnicBForm}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-45 wrap-break-word">{enrollment.address}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4">
+                        <select
+                          value={enrollment.status}
+                          onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
+                          className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm"
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="approved">Approved</option>
+                          <option value="rejected">Rejected</option>
+                        </select>
+                      </td>
+                      <td className="px-4 py-4 text-center">
+                        <button
+                          onClick={() => handleDelete(enrollment._id)}
+                          className="text-red-400 hover:text-red-300 text-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="sm:hidden divide-y divide-white/10">
+              {enrollments.map((enrollment) => (
+                <div key={enrollment._id} className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-white font-semibold">{enrollment.name}</p>
+                      <p className="text-amber-400 text-sm">{enrollment.position}</p>
+                    </div>
+                    <span className="rounded-full border border-amber-400/40 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+                      {enrollment.status}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 text-sm text-gray-300">
+                    <p><span className="text-gray-400">Father:</span> {enrollment.fatherName}</p>
+                    <p><span className="text-gray-400">Contact:</span> {enrollment.contactNumber}</p>
+                    <p><span className="text-gray-400">Age:</span> {enrollment.age}</p>
+                    <p><span className="text-gray-400">CNIC/B-Form:</span> {enrollment.cnicBForm}</p>
+                    <p><span className="text-gray-400">Address:</span> {enrollment.address}</p>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <select
+                      value={enrollment.status}
+                      onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
+                      className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approved</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                    <button
+                      onClick={() => handleDelete(enrollment._id)}
+                      className="w-full rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
