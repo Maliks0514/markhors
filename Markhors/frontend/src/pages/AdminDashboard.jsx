@@ -1035,14 +1035,16 @@ const PlayersTab = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-6">
-        <div>
-          <h2 className="text-white text-2xl font-bold">Manage Players</h2>
-          <p className="text-gray-400">Add new squad members and remove players from the roster.</p>
+      <div className="mb-6 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-white text-xl sm:text-2xl font-bold leading-tight">Manage Players</h2>
+          <p className="mt-1 text-sm sm:text-base text-gray-400 leading-relaxed">
+            Add new squad members and remove players from the roster.
+          </p>
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+          className="w-full sm:w-auto min-h-[44px] self-stretch sm:self-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           + New Player
         </button>
