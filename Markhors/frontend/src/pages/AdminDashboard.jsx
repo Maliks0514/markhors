@@ -1034,7 +1034,7 @@ const PlayersTab = () => {
   };
 
   return (
-    <div>
+    <div className="w-full max-w-full overflow-hidden">
       <div className="mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
   <div className="flex-1 min-w-0">
     <h2 className="text-white text-xl sm:text-2xl font-bold leading-tight">
