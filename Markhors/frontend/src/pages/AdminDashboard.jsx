@@ -1044,7 +1044,7 @@ const PlayersTab = () => {
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-auto min-h-[44px] self-stretch sm:self-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          className="w-full lg:w-auto min-h-[44px] self-stretch sm:self-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           + New Player
         </button>
