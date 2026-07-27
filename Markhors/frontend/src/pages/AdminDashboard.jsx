@@ -726,65 +726,63 @@ const VideosTab = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-6">
-        <div>
-          <h2 className="text-white text-2xl font-bold">Manage Videos</h2>
-          <p className="text-gray-400">Upload and manage video content for the site.</p>
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-white text-xl sm:text-2xl font-bold leading-tight">Manage Videos</h2>
+          <p className="mt-1 text-sm sm:text-base text-gray-400 leading-relaxed">
+            Upload and manage video content for the site.
+          </p>
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+          className="w-full sm:w-auto self-stretch sm:self-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           + New Video
         </button>
       </div>
 
-      {/* Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
-          <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
-              <h2 className="text-white text-2xl font-bold">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 sm:p-4 backdrop-blur-sm">
+          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border border-white/20 bg-white/5">
+            <div className="sticky top-0 flex items-center justify-between border-b border-white/10 bg-black/50 p-4 sm:p-6">
+              <h2 className="text-white text-xl sm:text-2xl font-bold">
                 {editingId ? "Edit Video" : "New Video"}
               </h2>
               <button
                 onClick={handleCancel}
-                className="text-gray-400 hover:text-white"
+                className="rounded-md p-2 text-gray-400 hover:bg-white/10 hover:text-white"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 p-4 sm:p-6">
               {uploadError && (
-                <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg text-sm">
+                <div className="rounded-lg border border-red-500/50 bg-red-500/20 px-4 py-3 text-sm text-red-300">
                   {uploadError}
                 </div>
               )}
+
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Title *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Title *</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Category *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Category *</label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 >
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
@@ -795,53 +793,41 @@ const VideosTab = () => {
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Date *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Date *</label>
                 <input
                   type="text"
                   name="date"
                   value={formData.date}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Video File (MP4) *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Video File (MP4) *</label>
                 <input
                   type="file"
                   accept="video/mp4"
                   onChange={handleVideoUpload}
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 file:bg-amber-500 file:text-black file:border-0 file:rounded file:px-3 file:py-1 file:font-semibold file:cursor-pointer"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none file:mr-3 file:rounded file:border-0 file:bg-amber-500 file:px-3 file:py-1 file:font-semibold file:text-black file:cursor-pointer"
                 />
-                {formData.videoUrl && (
-                  <p className="text-amber-400 text-xs mt-2">✓ Video selected</p>
-                )}
+                {formData.videoUrl && <p className="mt-2 text-xs text-amber-400">✓ Video selected</p>}
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Thumbnail Image *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Thumbnail Image *</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleThumbnailUpload}
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 file:bg-amber-500 file:text-black file:border-0 file:rounded file:px-3 file:py-1 file:font-semibold file:cursor-pointer"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none file:mr-3 file:rounded file:border-0 file:bg-amber-500 file:px-3 file:py-1 file:font-semibold file:text-black file:cursor-pointer"
                 />
-                {formData.thumbnailUrl && (
-                  <p className="text-amber-400 text-xs mt-2">✓ Thumbnail selected</p>
-                )}
+                {formData.thumbnailUrl && <p className="mt-2 text-xs text-amber-400">✓ Thumbnail selected</p>}
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Duration *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Duration *</label>
                 <input
                   type="text"
                   name="duration"
@@ -849,36 +835,34 @@ const VideosTab = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="12:34"
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">
-                  Description *
-                </label>
+                <label className="mb-2 block text-sm font-semibold text-white">Description *</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   required
-                  rows="2"
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 resize-none"
+                  rows="3"
+                  className="w-full resize-none rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row">
                 <button
                   type="submit"
                   disabled={!formData.videoUrl || !formData.thumbnailUrl}
-                  className="w-full sm:flex-1 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-black font-bold py-2 rounded-lg transition-colors"
+                  className="w-full rounded-lg bg-amber-500 py-2 font-bold text-black transition-colors hover:bg-amber-600 disabled:bg-amber-500/50 sm:flex-1"
                 >
                   {editingId ? "Update" : "Create"}
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="w-full sm:flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
+                  className="w-full rounded-lg bg-white/10 py-2 font-bold text-white transition-colors hover:bg-white/20 sm:flex-1"
                 >
                   Cancel
                 </button>
@@ -888,71 +872,90 @@ const VideosTab = () => {
         </div>
       )}
 
-      {/* Videos Table */}
-      <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-        <table className="block sm:table min-w-215 w-full text-sm sm:text-base">
-          <thead className="hidden sm:table-header-group">
-            <tr className="border-b border-white/10 bg-white/5">
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Thumbnail</th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Title</th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Category</th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Date</th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Duration</th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {videos.map((video) => (
-              <tr key={video._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
-                <td className="block sm:table-cell px-6 py-4">
-                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Thumbnail</span>
-                  <img
-                    src={video.thumbnailUrl}
-                    alt={video.title}
-                    className="w-12 h-12 rounded object-cover"
-                  />
-                </td>
-                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">
-                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Title</span>
-                  {video.title}
-                </td>
-                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4">
-                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Category</span>
-                  <span className="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full">
-                    {video.category}
-                  </span>
-                </td>
-                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
-                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Date</span>
-                  {video.date}
-                </td>
-                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
-                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Duration</span>
-                  {video.duration}
-                </td>
-                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-center">
-                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-                    <button
-                      onClick={() => handleEdit(video)}
-                      className="text-blue-400 hover:text-blue-300"
-                    >
+      <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+        <div className="border-b border-white/10 px-4 py-4 sm:px-6">
+          <h3 className="text-lg font-bold text-white sm:text-xl">Video Library</h3>
+        </div>
+
+        {loading ? (
+          <div className="p-8 text-center text-yellow-200">Loading videos...</div>
+        ) : videos.length === 0 ? (
+          <div className="p-8 text-center text-gray-400">No videos added yet.</div>
+        ) : (
+          <>
+            <div className="hidden overflow-x-auto sm:block">
+              <table className="w-full min-w-[760px] text-sm sm:text-base">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5">
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Thumbnail</th>
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Title</th>
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Category</th>
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Date</th>
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Duration</th>
+                    <th className="px-3 py-3 text-center font-semibold text-white sm:px-6 sm:py-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {videos.map((video) => (
+                    <tr key={video._id} className="border-b border-white/10 hover:bg-white/5">
+                      <td className="px-3 py-3 text-white sm:px-6 sm:py-4">
+                        <img src={video.thumbnailUrl} alt={video.title} className="h-12 w-12 rounded object-cover" />
+                      </td>
+                      <td className="px-3 py-3 text-white sm:px-6 sm:py-4">
+                        <p className="font-semibold">{video.title}</p>
+                      </td>
+                      <td className="px-3 py-3 text-gray-300 sm:px-6 sm:py-4">
+                        <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs text-amber-400">
+                          {video.category}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3 text-gray-300 sm:px-6 sm:py-4">{video.date}</td>
+                      <td className="px-3 py-3 text-gray-300 sm:px-6 sm:py-4">{video.duration}</td>
+                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
+                        <div className="flex items-center justify-center gap-3">
+                          <button onClick={() => handleEdit(video)} className="text-blue-400 hover:text-blue-300">
+                            Edit
+                          </button>
+                          <button onClick={() => handleDelete(video._id)} className="text-red-400 hover:text-red-300">
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="divide-y divide-white/10 sm:hidden">
+              {videos.map((video) => (
+                <div key={video._id} className="space-y-3 p-4">
+                  <div className="flex items-start gap-3">
+                    <img src={video.thumbnailUrl} alt={video.title} className="h-14 w-14 shrink-0 rounded object-cover" />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-white">{video.title}</p>
+                      <p className="text-sm text-amber-400">{video.category}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 text-sm text-gray-300">
+                    <p><span className="text-gray-400">Date:</span> {video.date}</p>
+                    <p><span className="text-gray-400">Duration:</span> {video.duration}</p>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <button onClick={() => handleEdit(video)} className="w-full rounded-lg border border-blue-400/30 bg-blue-500/10 px-3 py-2 text-sm font-medium text-blue-400">
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleDelete(video._id)}
-                      className="text-red-400 hover:text-red-300"
-                    >
+                    <button onClick={() => handleDelete(video._id)} className="w-full rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400">
                       Delete
                     </button>
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
