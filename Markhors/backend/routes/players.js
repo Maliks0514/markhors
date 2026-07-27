@@ -48,6 +48,39 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
+router.put("/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { name, position, description } = req.body;
+
+    if (!name || !description) {
+      return res.status(400).json({ message: "Name and description are required" });
+    }
+
+    const updateData = {
+      name,
+      position: position || "Player",
+      description,
+    };
+
+    if (req.file) {
+      updateData.imageUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+    } else if (req.body.image || req.body.imageUrl) {
+      updateData.imageUrl = req.body.image || req.body.imageUrl;
+    }
+
+    const updatedPlayer = await Player.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
+    if (!updatedPlayer) {
+      return res.status(404).json({ message: "Player not found" });
+    }
+
+    res.json(updatedPlayer);
+  } catch (error) {
+    console.error("Error updating player:", error);
+    res.status(500).json({ message: "Failed to update player" });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;

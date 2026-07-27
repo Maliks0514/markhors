@@ -962,6 +962,7 @@ const PlayersTab = () => {
   const [players, setPlayers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [isFormOpen, setIsFormOpen] = React.useState(false);
+  const [editingPlayer, setEditingPlayer] = React.useState(null);
   const [newPlayer, setNewPlayer] = React.useState({
     name: "",
     position: "",
@@ -996,12 +997,31 @@ const PlayersTab = () => {
     setNewPlayer((prev) => ({ ...prev, imageFile }));
   };
 
+  const resetForm = () => {
+    setNewPlayer({ name: "", position: "", description: "", imageFile: null });
+    setEditingPlayer(null);
+    setError("");
+    setIsFormOpen(false);
+  };
+
+  const handleEdit = (player) => {
+    setEditingPlayer(player);
+    setNewPlayer({
+      name: player.name || "",
+      position: player.position || "",
+      description: player.description || "",
+      imageFile: null,
+    });
+    setError("");
+    setIsFormOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!newPlayer.name || !newPlayer.description || !newPlayer.imageFile) {
-      setError("Please complete all fields and upload an image.");
+    if (!newPlayer.name || !newPlayer.description) {
+      setError("Please complete the name and description fields.");
       return;
     }
 
@@ -1010,15 +1030,23 @@ const PlayersTab = () => {
       payload.append("name", newPlayer.name);
       payload.append("position", newPlayer.position || "Player");
       payload.append("description", newPlayer.description);
-      payload.append("image", newPlayer.imageFile);
 
-      const created = await playerAPI.createPlayer(payload);
-      setPlayers((prev) => [created, ...prev]);
-      setNewPlayer({ name: "", position: "", description: "", imageFile: null });
-      setIsFormOpen(false);
+      if (newPlayer.imageFile) {
+        payload.append("image", newPlayer.imageFile);
+      }
+
+      if (editingPlayer) {
+        const updated = await playerAPI.updatePlayer(editingPlayer._id, payload);
+        setPlayers((prev) => prev.map((player) => (player._id === editingPlayer._id ? updated : player)));
+      } else {
+        const created = await playerAPI.createPlayer(payload);
+        setPlayers((prev) => [created, ...prev]);
+      }
+
+      resetForm();
     } catch (err) {
-      console.error("Error adding player:", err);
-      setError("Unable to add player. Please try again.");
+      console.error("Error saving player:", err);
+      setError(editingPlayer ? "Unable to update player. Please try again." : "Unable to add player. Please try again.");
     }
   };
 
@@ -1039,11 +1067,16 @@ const PlayersTab = () => {
         <div className="min-w-0">
           <h2 className="text-white text-xl sm:text-2xl font-bold leading-tight">Manage Players</h2>
           <p className="mt-1 text-sm sm:text-base text-gray-400 leading-relaxed">
-            Add new squad members and remove players from the roster.
+            Add new squad members, update existing roster players, and remove players when needed.
           </p>
         </div>
         <button
-          onClick={() => setIsFormOpen(true)}
+          onClick={() => {
+            setEditingPlayer(null);
+            setNewPlayer({ name: "", position: "", description: "", imageFile: null });
+            setError("");
+            setIsFormOpen(true);
+          }}
           className="w-full sm:w-auto self-stretch sm:self-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           + New Player
@@ -1054,12 +1087,11 @@ const PlayersTab = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 sm:p-4 backdrop-blur-sm">
           <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border border-white/20 bg-white/5">
             <div className="sticky top-0 flex items-center justify-between border-b border-white/10 bg-black/50 p-4 sm:p-6">
-              <h2 className="text-white text-xl sm:text-2xl font-bold">New Player</h2>
+              <h2 className="text-white text-xl sm:text-2xl font-bold">
+                {editingPlayer ? "Edit Player" : "New Player"}
+              </h2>
               <button
-                onClick={() => {
-                  setIsFormOpen(false);
-                  setError("");
-                }}
+                onClick={() => resetForm()}
                 className="rounded-md p-2 text-gray-400 hover:bg-white/10 hover:text-white"
               >
                 ✕
@@ -1108,7 +1140,9 @@ const PlayersTab = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold text-white">Picture *</label>
+                <label className="mb-2 block text-sm font-semibold text-white">
+                  Picture {editingPlayer ? "(optional)" : "*"}
+                </label>
                 <input
                   type="file"
                   accept="image/*"
@@ -1122,14 +1156,11 @@ const PlayersTab = () => {
                   type="submit"
                   className="w-full rounded-lg bg-amber-500 py-2 font-bold text-black transition-colors hover:bg-amber-600 sm:flex-1"
                 >
-                  Add Player
+                  {editingPlayer ? "Save Changes" : "Add Player"}
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setIsFormOpen(false);
-                    setError("");
-                  }}
+                  onClick={() => resetForm()}
                   className="w-full rounded-lg bg-white/10 py-2 font-bold text-white transition-colors hover:bg-white/20 sm:flex-1"
                 >
                   Cancel
@@ -1182,12 +1213,20 @@ const PlayersTab = () => {
                         <p className="whitespace-pre-wrap break-words">{player.description}</p>
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <button
-                          onClick={() => handleDelete(player._id)}
-                          className="text-red-400 hover:text-red-300"
-                        >
-                          Delete
-                        </button>
+                        <div className="flex items-center justify-center gap-3">
+                          <button
+                            onClick={() => handleEdit(player)}
+                            className="text-blue-400 hover:text-blue-300"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(player._id)}
+                            className="text-red-400 hover:text-red-300"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -1214,12 +1253,20 @@ const PlayersTab = () => {
                     <p className="whitespace-pre-wrap break-words">{player.description}</p>
                   </div>
 
-                  <button
-                    onClick={() => handleDelete(player._id)}
-                    className="w-full rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <button
+                      onClick={() => handleEdit(player)}
+                      className="w-full rounded-lg border border-blue-400/30 bg-blue-500/10 px-3 py-2 text-sm font-medium text-blue-400"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(player._id)}
+                      className="w-full rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

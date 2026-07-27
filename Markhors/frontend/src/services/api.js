@@ -200,6 +200,21 @@ export const playerAPI = {
     }
   },
 
+  updatePlayer: async (id, playerData) => {
+    try {
+      const isFormData = playerData instanceof FormData;
+      const response = await fetch(`${API_BASE_URL}/players/${id}`, {
+        method: "PUT",
+        headers: isFormData ? undefined : { "Content-Type": "application/json" },
+        body: isFormData ? playerData : JSON.stringify(playerData),
+      });
+      return await parseResponse(response);
+    } catch (error) {
+      console.error("Error updating player:", error);
+      throw error;
+    }
+  },
+
   deletePlayer: async (id) => {
     try {
       const response = await fetch(`${API_BASE_URL}/players/${id}`, {
