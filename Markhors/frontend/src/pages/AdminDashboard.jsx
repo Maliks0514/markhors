@@ -127,7 +127,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto p-4 sm:p-6">
+        <div className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6">
           {activeTab === "overview" && <OverviewTab />}
           {activeTab === "news" && <NewsTab />}
           {activeTab === "videos" && <VideosTab />}
@@ -514,7 +514,7 @@ const NewsTab = () => {
       {/* Articles Table */}
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-175 w-full text-sm sm:text-base">
+          <table className="min-w-180 w-full text-sm sm:text-base">
             <thead>
               <tr className="border-b border-white/10 bg-white/5">
                 <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Title</th>
@@ -532,7 +532,7 @@ const NewsTab = () => {
                   </td>
                   <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{article.date}</td>
                   <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                       <button onClick={() => handleEdit(article)} className="text-blue-400 hover:text-blue-300">Edit</button>
                       <button onClick={() => handleDelete(article._id)} className="text-red-400 hover:text-red-300">Delete</button>
                     </div>
@@ -870,7 +870,7 @@ const VideosTab = () => {
       {/* Videos Table */}
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
-        <table className="min-w-175 w-full text-sm sm:text-base">
+        <table className="min-w-215 w-full text-sm sm:text-base">
           <thead>
             <tr className="border-b border-white/10 bg-white/5">
               <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Thumbnail</th>
@@ -908,7 +908,7 @@ const VideosTab = () => {
                 <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{video.date}</td>
                 <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{video.duration}</td>
                 <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
-                  <div className="flex items-center justify-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                     <button
                       onClick={() => handleEdit(video)}
                       className="text-blue-400 hover:text-blue-300"
@@ -1120,7 +1120,7 @@ const PlayersTab = () => {
           <div className="p-8 text-center text-gray-400">No players added yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-175 w-full text-sm sm:text-base">
+            <table className="min-w-195 w-full text-sm sm:text-base">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Player</th>
@@ -1321,7 +1321,7 @@ const GroundBookingsTab = () => {
           <div className="p-8 text-center text-gray-400">No bookings yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-[980px] w-full text-xs sm:text-sm">
+            <table className="min-w-275 w-full text-[11px] sm:text-sm">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
@@ -1586,7 +1586,7 @@ const ToursTab = () => {
                     <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{tour.venueName}</td>
                     <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-55 wrap-break-word">{tour.advancePaymentDetails}</td>
                     <td className="px-3 py-3 sm:px-4 sm:py-4 text-center">
-                      <div className="flex items-center justify-center gap-3">
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                         <button onClick={() => handleEdit(tour)} className="text-blue-400 hover:text-blue-300">Edit</button>
                         <button onClick={() => handleDelete(tour._id)} className="text-red-400 hover:text-red-300">Delete</button>
                       </div>
