@@ -514,8 +514,8 @@ const NewsTab = () => {
       {/* Articles Table */}
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-180 w-full text-sm sm:text-base">
-            <thead>
+          <table className="block sm:table min-w-180 w-full text-sm sm:text-base">
+            <thead className="hidden sm:table-header-group">
               <tr className="border-b border-white/10 bg-white/5">
                 <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Title</th>
                 <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Category</th>
@@ -525,13 +525,21 @@ const NewsTab = () => {
             </thead>
             <tbody>
               {articles.map((article) => (
-                <tr key={article._id} className="border-b border-white/10 hover:bg-white/5">
-                  <td className="px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">{article.title}</td>
-                  <td className="px-3 py-3 sm:px-6 sm:py-4">
+                <tr key={article._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
+                  <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">
+                    <span className="sm:hidden text-gray-400 text-xs block mb-1">Title</span>
+                    {article.title}
+                  </td>
+                  <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4">
+                    <span className="sm:hidden text-gray-400 text-xs block mb-1">Category</span>
                     <span className="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full">{article.category}</span>
                   </td>
-                  <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{article.date}</td>
-                  <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
+                  <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
+                    <span className="sm:hidden text-gray-400 text-xs block mb-1">Date</span>
+                    {article.date}
+                  </td>
+                  <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-center">
+                    <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                       <button onClick={() => handleEdit(article)} className="text-blue-400 hover:text-blue-300">Edit</button>
                       <button onClick={() => handleDelete(article._id)} className="text-red-400 hover:text-red-300">Delete</button>
@@ -870,44 +878,48 @@ const VideosTab = () => {
       {/* Videos Table */}
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
-        <table className="min-w-215 w-full text-sm sm:text-base">
-          <thead>
+        <table className="block sm:table min-w-215 w-full text-sm sm:text-base">
+          <thead className="hidden sm:table-header-group">
             <tr className="border-b border-white/10 bg-white/5">
               <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Thumbnail</th>
               <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Title</th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">
-                Category
-              </th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">
-                Date
-              </th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">
-                Duration
-              </th>
-              <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">
-                Actions
-              </th>
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Category</th>
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Date</th>
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Duration</th>
+              <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
             {videos.map((video) => (
-              <tr key={video._id} className="border-b border-white/10 hover:bg-white/5">
-                <td className="px-6 py-4">
+              <tr key={video._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
+                <td className="block sm:table-cell px-6 py-4">
+                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Thumbnail</span>
                   <img
                     src={video.thumbnailUrl}
                     alt={video.title}
                     className="w-12 h-12 rounded object-cover"
                   />
                 </td>
-                <td className="px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">{video.title}</td>
-                <td className="px-3 py-3 sm:px-6 sm:py-4">
+                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-white max-w-55 wrap-break-word">
+                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Title</span>
+                  {video.title}
+                </td>
+                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4">
+                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Category</span>
                   <span className="bg-amber-500/20 text-amber-400 text-xs px-3 py-1 rounded-full">
                     {video.category}
                   </span>
                 </td>
-                <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{video.date}</td>
-                <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{video.duration}</td>
-                <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
+                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
+                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Date</span>
+                  {video.date}
+                </td>
+                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
+                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Duration</span>
+                  {video.duration}
+                </td>
+                <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-center">
+                  <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                     <button
                       onClick={() => handleEdit(video)}
