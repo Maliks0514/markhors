@@ -1034,91 +1034,93 @@ const PlayersTab = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h2 className="text-white text-2xl font-bold">Manage Players</h2>
-          <p className="text-gray-400">Add new squad members and remove players from the roster.</p>
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-white text-xl sm:text-2xl font-bold leading-tight">Manage Players</h2>
+          <p className="mt-1 text-sm sm:text-base text-gray-400 leading-relaxed">
+            Add new squad members and remove players from the roster.
+          </p>
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+          className="w-full sm:w-auto self-stretch sm:self-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           + New Player
         </button>
       </div>
 
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
-          <div className="bg-white/5 border border-white/20 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-black/50 border-b border-white/10 p-6 flex justify-between items-center">
-              <h2 className="text-white text-2xl font-bold">New Player</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 sm:p-4 backdrop-blur-sm">
+          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border border-white/20 bg-white/5">
+            <div className="sticky top-0 flex items-center justify-between border-b border-white/10 bg-black/50 p-4 sm:p-6">
+              <h2 className="text-white text-xl sm:text-2xl font-bold">New Player</h2>
               <button
                 onClick={() => {
                   setIsFormOpen(false);
                   setError("");
                 }}
-                className="text-gray-400 hover:text-white"
+                className="rounded-md p-2 text-gray-400 hover:bg-white/10 hover:text-white"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 p-4 sm:p-6">
               {error && (
-                <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg text-sm">
+                <div className="rounded-lg border border-red-500/50 bg-red-500/20 px-4 py-3 text-sm text-red-300">
                   {error}
                 </div>
               )}
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">Name *</label>
+                <label className="mb-2 block text-sm font-semibold text-white">Name *</label>
                 <input
                   type="text"
                   name="name"
                   value={newPlayer.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">Position</label>
+                <label className="mb-2 block text-sm font-semibold text-white">Position</label>
                 <input
                   type="text"
                   name="position"
                   value={newPlayer.position}
                   onChange={handleChange}
                   placeholder="e.g. Forward, Midfielder"
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">Description *</label>
+                <label className="mb-2 block text-sm font-semibold text-white">Description *</label>
                 <textarea
                   name="description"
                   value={newPlayer.description}
                   onChange={handleChange}
                   rows="4"
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 resize-none"
+                  className="w-full resize-none rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-white text-sm font-semibold mb-2">Picture *</label>
+                <label className="mb-2 block text-sm font-semibold text-white">Picture *</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 file:bg-amber-500 file:text-black file:border-0 file:rounded file:px-3 file:py-1 file:font-semibold file:cursor-pointer"
+                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none file:mr-3 file:rounded file:border-0 file:bg-amber-500 file:px-3 file:py-1 file:font-semibold file:text-black file:cursor-pointer"
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row">
                 <button
                   type="submit"
-                  className="w-full sm:flex-1 bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg"
+                  className="w-full rounded-lg bg-amber-500 py-2 font-bold text-black transition-colors hover:bg-amber-600 sm:flex-1"
                 >
                   Add Player
                 </button>
@@ -1128,7 +1130,7 @@ const PlayersTab = () => {
                     setIsFormOpen(false);
                     setError("");
                   }}
-                  className="w-full sm:flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-2 rounded-lg"
+                  className="w-full rounded-lg bg-white/10 py-2 font-bold text-white transition-colors hover:bg-white/20 sm:flex-1"
                 >
                   Cancel
                 </button>
@@ -1138,63 +1140,90 @@ const PlayersTab = () => {
         </div>
       )}
 
-      <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
-        <div className="px-4 sm:px-6 py-4 border-b border-white/10">
-          <h3 className="text-white text-lg sm:text-xl font-bold">Player Roster</h3>
+      <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+        <div className="border-b border-white/10 px-4 py-4 sm:px-6">
+          <h3 className="text-lg font-bold text-white sm:text-xl">Player Roster</h3>
         </div>
         {loading ? (
           <div className="p-8 text-center text-yellow-200">Loading players...</div>
         ) : players.length === 0 ? (
           <div className="p-8 text-center text-gray-400">No players added yet.</div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="block sm:table min-w-195 w-full text-sm sm:text-base">
-              <thead className="hidden sm:table-header-group">
-                <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Player</th>
-                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Position</th>
-                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Description</th>
-                  <th className="px-3 py-3 sm:px-6 sm:py-4 text-center text-white font-semibold">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {players.map((player) => (
-                  <tr key={player._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
-                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Player</span>
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={player.imageUrl}
-                          alt={player.name}
-                          className="w-14 h-14 rounded-full object-cover"
-                        />
-                        <div>
-                          <p className="text-white font-semibold">{player.name}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Position</span>
-                      {player.position || "Player"}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300 max-w-65 wrap-break-word">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Description</span>
-                      {player.description}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-center">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
-                      <button
-                        onClick={() => handleDelete(player._id)}
-                        className="text-red-400 hover:text-red-300"
-                      >
-                        Delete
-                      </button>
-                    </td>
+          <>
+            <div className="hidden overflow-x-auto sm:block">
+              <table className="w-full min-w-[720px] text-sm sm:text-base">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5">
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Player</th>
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Position</th>
+                    <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Description</th>
+                    <th className="px-3 py-3 text-center font-semibold text-white sm:px-6 sm:py-4">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {players.map((player) => (
+                    <tr key={player._id} className="border-b border-white/10 hover:bg-white/5">
+                      <td className="px-3 py-3 text-white sm:px-6 sm:py-4">
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={player.imageUrl}
+                            alt={player.name}
+                            className="h-14 w-14 rounded-full object-cover"
+                          />
+                          <div>
+                            <p className="font-semibold">{player.name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3 text-gray-300 sm:px-6 sm:py-4">
+                        {player.position || "Player"}
+                      </td>
+                      <td className="max-w-[260px] px-3 py-3 text-gray-300 sm:px-6 sm:py-4">
+                        <p className="whitespace-pre-wrap break-words">{player.description}</p>
+                      </td>
+                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
+                        <button
+                          onClick={() => handleDelete(player._id)}
+                          className="text-red-400 hover:text-red-300"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="divide-y divide-white/10 sm:hidden">
+              {players.map((player) => (
+                <div key={player._id} className="space-y-3 p-4">
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={player.imageUrl}
+                      alt={player.name}
+                      className="h-14 w-14 shrink-0 rounded-full object-cover"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-white">{player.name}</p>
+                      <p className="text-sm text-amber-400">{player.position || "Player"}</p>
+                    </div>
+                  </div>
+
+                  <div className="text-sm text-gray-300">
+                    <p className="whitespace-pre-wrap break-words">{player.description}</p>
+                  </div>
+
+                  <button
+                    onClick={() => handleDelete(player._id)}
+                    className="w-full rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
