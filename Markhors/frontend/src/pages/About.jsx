@@ -15,6 +15,10 @@ const About = () => {
       title: "Background History",
       text: "Chitral Markhors was formed to strengthen football culture in the region by creating opportunities for local talent, encouraging teamwork, and bringing the community together through matches, training, and events.",
     },
+    {
+      title: "Contact",
+      text: "Phone# +92 344 1041872",
+    },
   ];
 
   return (

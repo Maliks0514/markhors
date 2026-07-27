@@ -26,10 +26,9 @@ const FooterSection = () => {
         <div>
           <h3 className="text-yellow-200 text-lg font-bold uppercase mb-4">Connect</h3>
           <div className="flex flex-col gap-2 text-sm text-gray-300">
-            <a href="mailto:contact@markhors.com" className="hover:text-yellow-200">contact@markhors.com</a>
-            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Instagram</a>
+            <a href="mailto:contact@markhors.com" className="hover:text-yellow-200">contact: +92 344 1041872</a>
+            <a href="https://www.instagram.com/chitral_markhors?igsh=MTk3enVoMWg2eXJibw==" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Instagram</a>
             <a href="https://www.facebook.com/share/1G2HT64fFu/" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Facebook</a>
-            <a href="https://www.youtube.com" target="_blank" rel="noreferrer" className="hover:text-yellow-200">YouTube</a>
           </div>
         </div>
       </div>
