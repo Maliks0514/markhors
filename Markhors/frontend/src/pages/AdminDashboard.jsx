@@ -380,7 +380,7 @@ const NewsTab = () => {
         <h2 className="text-white text-2xl font-bold">Manage News</h2>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
         >
           + New Article
         </button>
@@ -728,7 +728,7 @@ const VideosTab = () => {
         <h2 className="text-white text-2xl font-bold">Manage Videos</h2>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
         >
           + New Video
         </button>
@@ -1036,7 +1036,7 @@ const PlayersTab = () => {
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-10 lg:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
         >
           + New Player
         </button>
