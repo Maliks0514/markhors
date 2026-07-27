@@ -1393,80 +1393,115 @@ const GroundBookingsTab = () => {
         ) : bookings.length === 0 ? (
           <div className="p-8 text-center text-gray-400">No bookings yet.</div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="block sm:table min-w-275 w-full text-[11px] sm:text-sm">
-              <thead className="hidden sm:table-header-group">
-                <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Contact</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Date</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Time</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Receipt</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
-                  <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.map((booking) => (
-                  <tr key={booking._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-white">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Name</span>
-                      {booking.name}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">CNIC</span>
-                      {booking.cnic}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Contact</span>
-                      {booking.contactNumber}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Date</span>
-                      {new Date(booking.date).toLocaleDateString()}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Time</span>
-                      {booking.timeFrom} - {booking.timeTo}
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Receipt</span>
+          <>
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5">
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Contact</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Date</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Time</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Receipt</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Status</th>
+                    <th className="px-3 py-3 sm:px-4 sm:py-4 text-center text-white font-semibold">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings.map((booking) => (
+                    <tr key={booking._id} className="border-b border-white/10 hover:bg-white/5">
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{booking.name}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.cnic}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.contactNumber}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{new Date(booking.date).toLocaleDateString()}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.timeFrom} - {booking.timeTo}</td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4">
+                        <a
+                          href={booking.feeReceiptUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-amber-400 hover:text-amber-300 underline text-sm"
+                        >
+                          View Receipt
+                        </a>
+                      </td>
+                      <td className="px-3 py-3 sm:px-4 sm:py-4">
+                        <select
+                          value={booking.status}
+                          onChange={(e) => handleStatusChange(booking._id, e.target.value)}
+                          className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm"
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      </td>
+                      <td className="px-4 py-4 text-center">
+                        <button
+                          onClick={() => handleDelete(booking._id)}
+                          className="text-red-400 hover:text-red-300 text-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="sm:hidden divide-y divide-white/10">
+              {bookings.map((booking) => (
+                <div key={booking._id} className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-white font-semibold">{booking.name}</p>
+                      <p className="text-amber-400 text-sm">{booking.cnic}</p>
+                    </div>
+                    <span className="rounded-full border border-amber-400/40 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-300">
+                      {booking.status}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1 text-sm text-gray-300">
+                    <p><span className="text-gray-400">Contact:</span> {booking.contactNumber}</p>
+                    <p><span className="text-gray-400">Date:</span> {new Date(booking.date).toLocaleDateString()}</p>
+                    <p><span className="text-gray-400">Time:</span> {booking.timeFrom} - {booking.timeTo}</p>
+                    <p>
+                      <span className="text-gray-400">Receipt:</span>{" "}
                       <a
                         href={booking.feeReceiptUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-amber-400 hover:text-amber-300 underline text-sm"
+                        className="text-amber-400 hover:text-amber-300 underline"
                       >
                         View Receipt
                       </a>
-                    </td>
-                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Status</span>
-                      <select
-                        value={booking.status}
-                        onChange={(e) => handleStatusChange(booking._id, e.target.value)}
-                        className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="cancelled">Cancelled</option>
-                      </select>
-                    </td>
-                    <td className="block sm:table-cell px-4 py-4 text-center">
-                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
-                      <button
-                        onClick={() => handleDelete(booking._id)}
-                        className="text-red-400 hover:text-red-300 text-sm"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <select
+                      value={booking.status}
+                      onChange={(e) => handleStatusChange(booking._id, e.target.value)}
+                      className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button
+                      onClick={() => handleDelete(booking._id)}
+                      className="w-full rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-400"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
