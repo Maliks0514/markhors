@@ -1034,39 +1034,19 @@ const PlayersTab = () => {
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
-      <div className="mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-  <div className="flex-1 min-w-0">
-    <h2 className="text-white text-xl sm:text-2xl font-bold leading-tight">
-      Manage Players
-    </h2>
-    <p className="mt-1 text-sm sm:text-base text-gray-400 leading-relaxed">
-      Add new squad members and remove players from the roster.
-    </p>
-  </div>
-
-  <button
-    onClick={() => setIsFormOpen(true)}
-    className="
-      w-full
-      sm:w-auto
-      lg:w-auto
-      flex-shrink-0
-      min-h-[44px]
-      px-4
-      py-2.5
-      bg-amber-500
-      hover:bg-amber-600
-      text-black
-      font-bold
-      rounded-lg
-      transition-colors
-      text-center
-    "
-  >
-    + New Player
-  </button>
-</div>
+    <div className="space-y-8">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 className="text-white text-2xl font-bold">Manage Players</h2>
+          <p className="text-gray-400">Add new squad members and remove players from the roster.</p>
+        </div>
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+        >
+          + New Player
+        </button>
+      </div>
 
       {isFormOpen && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
@@ -1159,6 +1139,9 @@ const PlayersTab = () => {
       )}
 
       <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+        <div className="px-4 sm:px-6 py-4 border-b border-white/10">
+          <h3 className="text-white text-lg sm:text-xl font-bold">Player Roster</h3>
+        </div>
         {loading ? (
           <div className="p-8 text-center text-yellow-200">Loading players...</div>
         ) : players.length === 0 ? (
