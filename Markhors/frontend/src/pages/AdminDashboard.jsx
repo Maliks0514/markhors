@@ -1036,7 +1036,7 @@ const PlayersTab = () => {
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full lg:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-10 lg:w-auto bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2 rounded-lg transition-colors"
         >
           + New Player
         </button>
