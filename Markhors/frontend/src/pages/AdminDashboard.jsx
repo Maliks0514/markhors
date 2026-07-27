@@ -376,11 +376,14 @@ const NewsTab = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h2 className="text-white text-2xl font-bold">Manage News</h2>
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-6">
+        <div>
+          <h2 className="text-white text-2xl font-bold">Manage News</h2>
+          <p className="text-gray-400">Create and manage news articles for the website.</p>
+        </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
         >
           + New Article
         </button>
@@ -724,11 +727,14 @@ const VideosTab = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h2 className="text-white text-2xl font-bold">Manage Videos</h2>
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-6">
+        <div>
+          <h2 className="text-white text-2xl font-bold">Manage Videos</h2>
+          <p className="text-gray-400">Upload and manage video content for the site.</p>
+        </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
         >
           + New Video
         </button>
@@ -1036,7 +1042,7 @@ const PlayersTab = () => {
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="w-full sm:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
+          className="w-full lg:w-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-lg transition-colors"
         >
           + New Player
         </button>
