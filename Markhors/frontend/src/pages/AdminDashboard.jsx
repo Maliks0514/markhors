@@ -97,18 +97,6 @@ const AdminDashboard = () => {
       <div className="flex-1 flex flex-col">
         {/* Top Header */}
         <div className="bg-white/5 border-b border-white/10 px-4 py-4 sm:px-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden text-white"
-            >
-              {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-            <div>
-              <h1 className="text-white text-2xl font-bold">Admin Dashboard</h1>
-              <p className="text-gray-400 text-sm">Welcome back, {user?.username}</p>
-            </div>
-          </div>
 
           {/* User Info & Logout */}
           <div className="hidden lg:flex items-center gap-4">
@@ -1132,8 +1120,8 @@ const PlayersTab = () => {
           <div className="p-8 text-center text-gray-400">No players added yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-195 w-full text-sm sm:text-base">
-              <thead>
+            <table className="block sm:table min-w-195 w-full text-sm sm:text-base">
+              <thead className="hidden sm:table-header-group">
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Player</th>
                   <th className="px-3 py-3 sm:px-6 sm:py-4 text-left text-white font-semibold">Position</th>
@@ -1143,20 +1131,30 @@ const PlayersTab = () => {
               </thead>
               <tbody>
                 {players.map((player) => (
-                  <tr key={player._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-3 py-3 sm:px-6 sm:py-4 flex items-center gap-4">
-                      <img
-                        src={player.imageUrl}
-                        alt={player.name}
-                        className="w-14 h-14 rounded-full object-cover"
-                      />
-                      <div>
-                        <p className="text-white font-semibold">{player.name}</p>
+                  <tr key={player._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Player</span>
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={player.imageUrl}
+                          alt={player.name}
+                          className="w-14 h-14 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="text-white font-semibold">{player.name}</p>
+                        </div>
                       </div>
                     </td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300">{player.position || "Player"}</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-300 max-w-65 wrap-break-word">{player.description}</td>
-                    <td className="px-3 py-3 sm:px-6 sm:py-4 text-center">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Position</span>
+                      {player.position || "Player"}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-gray-300 max-w-65 wrap-break-word">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Description</span>
+                      {player.description}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-6 sm:py-4 text-center">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
                       <button
                         onClick={() => handleDelete(player._id)}
                         className="text-red-400 hover:text-red-300"
@@ -1333,8 +1331,8 @@ const GroundBookingsTab = () => {
           <div className="p-8 text-center text-gray-400">No bookings yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-275 w-full text-[11px] sm:text-sm">
-              <thead>
+            <table className="block sm:table min-w-275 w-full text-[11px] sm:text-sm">
+              <thead className="hidden sm:table-header-group">
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">CNIC</th>
@@ -1348,17 +1346,29 @@ const GroundBookingsTab = () => {
               </thead>
               <tbody>
                 {bookings.map((booking) => (
-                  <tr key={booking._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{booking.name}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.cnic}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.contactNumber}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                  <tr key={booking._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-white">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Name</span>
+                      {booking.name}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">CNIC</span>
+                      {booking.cnic}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Contact</span>
+                      {booking.contactNumber}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Date</span>
                       {new Date(booking.date).toLocaleDateString()}
                     </td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Time</span>
                       {booking.timeFrom} - {booking.timeTo}
                     </td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Receipt</span>
                       <a
                         href={booking.feeReceiptUrl}
                         target="_blank"
@@ -1368,7 +1378,8 @@ const GroundBookingsTab = () => {
                         View Receipt
                       </a>
                     </td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Status</span>
                       <select
                         value={booking.status}
                         onChange={(e) => handleStatusChange(booking._id, e.target.value)}
@@ -1379,7 +1390,8 @@ const GroundBookingsTab = () => {
                         <option value="cancelled">Cancelled</option>
                       </select>
                     </td>
-                    <td className="px-4 py-4 text-center">
+                    <td className="block sm:table-cell px-4 py-4 text-center">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
                       <button
                         onClick={() => handleDelete(booking._id)}
                         className="text-red-400 hover:text-red-300 text-sm"
@@ -1582,8 +1594,8 @@ const ToursTab = () => {
           <div className="p-8 text-center text-gray-400">No tours available yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="block sm:table w-full text-sm">
+              <thead className="hidden sm:table-header-group">
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Tour</th>
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Venue</th>
@@ -1593,11 +1605,21 @@ const ToursTab = () => {
               </thead>
               <tbody>
                 {tours.map((tour) => (
-                  <tr key={tour._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{tour.title}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{tour.venueName}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-55 wrap-break-word">{tour.advancePaymentDetails}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-center">
+                  <tr key={tour._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-white">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Tour</span>
+                      {tour.title}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Venue</span>
+                      {tour.venueName}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-55 wrap-break-word">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Advance Payment</span>
+                      {tour.advancePaymentDetails}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-center">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
                       <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
                         <button onClick={() => handleEdit(tour)} className="text-blue-400 hover:text-blue-300">Edit</button>
                         <button onClick={() => handleDelete(tour._id)} className="text-red-400 hover:text-red-300">Delete</button>
@@ -1619,8 +1641,8 @@ const ToursTab = () => {
           <div className="p-8 text-center text-gray-400">No tour booking requests yet.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
+            <table className="block sm:table w-full text-sm">
+              <thead className="hidden sm:table-header-group">
                 <tr className="border-b border-white/10 bg-white/5">
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Tour</th>
                   <th className="px-3 py-3 sm:px-4 sm:py-4 text-left text-white font-semibold">Name</th>
@@ -1634,23 +1656,41 @@ const ToursTab = () => {
               </thead>
               <tbody>
                 {bookings.map((booking) => (
-                  <tr key={booking._id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-white">{booking.tourTitle}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.name}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.phoneNumber}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300">{booking.idCardNumber}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-45 wrap-break-word">{booking.address}</td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4">
+                  <tr key={booking._id} className="block sm:table-row border-b border-white/10 hover:bg-white/5">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-white">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Tour</span>
+                      {booking.tourTitle}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Name</span>
+                      {booking.name}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Phone</span>
+                      {booking.phoneNumber}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">ID Card</span>
+                      {booking.idCardNumber}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-gray-300 max-w-45 wrap-break-word">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Address</span>
+                      {booking.address}
+                    </td>
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Receipt</span>
                       <a href={booking.paymentReceiptUrl} target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline">View</a>
                     </td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Status</span>
                       <select value={booking.status} onChange={(e) => handleBookingStatusChange(booking._id, e.target.value)} className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 text-sm">
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
                       </select>
                     </td>
-                    <td className="px-3 py-3 sm:px-4 sm:py-4 text-center">
+                    <td className="block sm:table-cell px-3 py-3 sm:px-4 sm:py-4 text-center">
+                      <span className="sm:hidden text-gray-400 text-xs block mb-1">Actions</span>
                       <button onClick={() => handleBookingDelete(booking._id)} className="text-red-400 hover:text-red-300 text-sm">Delete</button>
                     </td>
                   </tr>
