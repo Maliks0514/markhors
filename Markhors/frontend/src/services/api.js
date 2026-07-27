@@ -129,10 +129,11 @@ export const articleAPI = {
   // Create new article
   createArticle: async (articleData) => {
     try {
+      const isFormData = articleData instanceof FormData;
       const response = await fetch(`${API_BASE_URL}/articles`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(articleData),
+        headers: isFormData ? undefined : { "Content-Type": "application/json" },
+        body: isFormData ? articleData : JSON.stringify(articleData),
       });
       return await parseResponse(response);
     } catch (error) {
@@ -144,13 +145,13 @@ export const articleAPI = {
   // Update article
   updateArticle: async (id, articleData) => {
     try {
+      const isFormData = articleData instanceof FormData;
       const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(articleData),
+        headers: isFormData ? undefined : { "Content-Type": "application/json" },
+        body: isFormData ? articleData : JSON.stringify(articleData),
       });
-      if (!response.ok) throw new Error("Failed to update article");
-      return await response.json();
+      return await parseResponse(response);
     } catch (error) {
       console.error("Error updating article:", error);
       throw error;

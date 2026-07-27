@@ -241,6 +241,7 @@ const NewsTab = () => {
     category: "match",
     date: "",
     image: "/main-banner.png",
+    imageFile: null,
     excerpt: "",
     content: "",
   });
@@ -281,15 +282,26 @@ const NewsTab = () => {
     }
 
     try {
+      const payload = new FormData();
+      payload.append("title", formData.title);
+      payload.append("category", formData.category);
+      payload.append("date", formData.date);
+      payload.append("excerpt", formData.excerpt);
+      payload.append("content", formData.content);
+
+      if (formData.imageFile) {
+        payload.append("image", formData.imageFile);
+      } else {
+        payload.append("image", formData.image || "/main-banner.png");
+      }
+
       if (editingId) {
-        // Update existing article
-        await articleAPI.updateArticle(editingId, formData);
+        const updatedArticle = await articleAPI.updateArticle(editingId, payload);
         setArticles(
-          articles.map((a) => (a._id === editingId ? { ...a, ...formData } : a))
+          articles.map((a) => (a._id === editingId ? { ...a, ...updatedArticle } : a))
         );
       } else {
-        // Create new article
-        const newArticle = await articleAPI.createArticle(formData);
+        const newArticle = await articleAPI.createArticle(payload);
         setArticles([newArticle, ...articles]);
       }
 
@@ -298,6 +310,7 @@ const NewsTab = () => {
         category: "match",
         date: "",
         image: "/main-banner.png",
+        imageFile: null,
         excerpt: "",
         content: "",
       });
@@ -333,9 +346,25 @@ const NewsTab = () => {
       category: "match",
       date: "",
       image: "/main-banner.png",
+      imageFile: null,
       excerpt: "",
       content: "",
     });
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setFormData((prev) => ({
+      ...prev,
+      imageFile: file,
+      image: previewUrl,
+    }));
   };
 
   return (
@@ -425,6 +454,27 @@ const NewsTab = () => {
                   rows="2"
                   className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-amber-400 resize-none"
                 />
+              </div>
+
+              <div>
+                <label className="block text-white text-sm font-semibold mb-2">
+                  Featured Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-500 file:text-black hover:file:bg-amber-400"
+                />
+                {formData.image && (
+                  <div className="mt-3 rounded-lg overflow-hidden border border-white/10 bg-white/5">
+                    <img
+                      src={formData.image}
+                      alt="Preview"
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                )}
               </div>
 
               <div>

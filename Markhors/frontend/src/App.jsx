@@ -16,6 +16,7 @@ import Signup from './pages/Signup'
 import RequireAuth from './components/RequireAuth'
 import MyBookings from './pages/MyBookings'
 import AdminDashboard from './pages/AdminDashboard'
+import NewsDetail from './pages/NewsDetail'
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/news' element={<News />} />
+        <Route path='/news/:id' element={<NewsDetail />} />
         <Route path='/videos' element={<Videos />} />
         <Route path='/players' element={<Players />} />
         <Route path='/academy' element={<RequireAuth><Academy /></RequireAuth>} />

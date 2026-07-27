@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Calendar, ArrowRight } from "lucide-react";
 import { articleAPI } from "../services/api";
@@ -7,6 +8,7 @@ const News = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [newsArticles, setNewsArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Load articles from API
   useEffect(() => {
@@ -125,7 +127,10 @@ const News = () => {
                   </p>
 
                   {/* Read More Button */}
-                  <button className="inline-flex items-center gap-2 text-yellow-200 hover:text-yellow-300 font-semibold text-sm transition-colors duration-300 group/btn">
+                  <button
+                    onClick={() => navigate(`/news/${article._id}`)}
+                    className="inline-flex items-center gap-2 text-yellow-200 hover:text-yellow-300 font-semibold text-sm transition-colors duration-300 group/btn"
+                  >
                     Read More
                     <ArrowRight
                       size={16}

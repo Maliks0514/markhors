@@ -1,17 +1,28 @@
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 const Article = require("../models/Article");
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+const toDataUrl = (file) => {
+  if (!file || !file.buffer) {
+    return null;
+  }
+
+  return `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+};
 
 // GET all articles with optional category filter
 router.get("/", async (req, res) => {
   try {
     const { category } = req.query;
     let query = {};
-    
+
     if (category && category !== "all") {
       query.category = category;
     }
-    
+
     const articles = await Article.find(query).sort({ createdAt: -1 });
     res.json(articles);
   } catch (error) {
@@ -36,10 +47,11 @@ router.get("/:id", async (req, res) => {
 });
 
 // CREATE new article
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const { title, category, date, excerpt, content, image } = req.body;
-    
+    const { title, category, date, excerpt, content } = req.body;
+    const image = toDataUrl(req.file) || req.body.image || "/main-banner.png";
+
     const article = new Article({
       title,
       category,
@@ -48,7 +60,7 @@ router.post("/", async (req, res) => {
       content,
       image,
     });
-    
+
     const savedArticle = await article.save();
     res.status(201).json(savedArticle);
   } catch (error) {
@@ -57,23 +69,25 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE article
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single("image"), async (req, res) => {
   try {
-    const { title, category, date, excerpt, content, image } = req.body;
-    
-    const article = await Article.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        category,
-        date,
-        excerpt,
-        content,
-        image,
-      },
-      { new: true }
-    );
-    
+    const { title, category, date, excerpt, content } = req.body;
+    const image = toDataUrl(req.file) || req.body.image;
+
+    const updateData = {
+      title,
+      category,
+      date,
+      excerpt,
+      content,
+    };
+
+    if (image) {
+      updateData.image = image;
+    }
+
+    const article = await Article.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
     if (!article) {
       return res.status(404).json({ error: "Article not found" });
     }
