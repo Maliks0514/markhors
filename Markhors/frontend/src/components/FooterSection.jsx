@@ -27,10 +27,7 @@ const FooterSection = () => {
         <div>
           <h3 className="text-yellow-200 text-lg font-bold uppercase mb-4">Connect</h3>
           <div className="flex flex-col gap-3 text-sm text-gray-300">
-            <a href="mailto:contact@markhors.com" className="flex items-center gap-2 hover:text-yellow-200">
-              <Mail size={16} />
-              <span>Email: contact@markhors.com</span>
-            </a>
+            
             <a href="https://wa.me/923441041872" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-yellow-200">
               <MessageSquare size={16} />
               <span>WhatsApp Chat</span>
