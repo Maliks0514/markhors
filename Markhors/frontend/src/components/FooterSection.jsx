@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Instagram, Facebook, MessageCircle } from "lucide-react";
 
 const FooterSection = () => {
   return (
@@ -25,11 +26,23 @@ const FooterSection = () => {
 
         <div>
           <h3 className="text-yellow-200 text-lg font-bold uppercase mb-4">Connect</h3>
-          <div className="flex flex-col gap-2 text-sm text-gray-300">
-            <a href="mailto:contact@markhors.com" className="hover:text-yellow-200">Email: contact@markhors.com</a>
-            <a href="https://wa.me/923441041872" target="_blank" rel="noreferrer" className="hover:text-yellow-200">WhatsApp Chat</a>
-            <a href="https://www.instagram.com/chitral_markhors?igsh=MTk3enVoMWg2eXJibw==" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Instagram</a>
-            <a href="https://www.facebook.com/share/1G2HT64fFu/" target="_blank" rel="noreferrer" className="hover:text-yellow-200">Facebook</a>
+          <div className="flex flex-col gap-3 text-sm text-gray-300">
+            <a href="mailto:contact@markhors.com" className="flex items-center gap-2 hover:text-yellow-200">
+              <MessageCircle size={16} />
+              <span>Email: contact@markhors.com</span>
+            </a>
+            <a href="https://wa.me/923441041872" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-yellow-200">
+              <MessageCircle size={16} />
+              <span>WhatsApp Chat</span>
+            </a>
+            <a href="https://www.instagram.com/chitral_markhors?igsh=MTk3enVoMWg2eXJibw==" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-yellow-200">
+              <Instagram size={16} />
+              <span>Instagram</span>
+            </a>
+            <a href="https://www.facebook.com/share/1G2HT64fFu/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-yellow-200">
+              <Facebook size={16} />
+              <span>Facebook</span>
+            </a>
           </div>
         </div>
       </div>
