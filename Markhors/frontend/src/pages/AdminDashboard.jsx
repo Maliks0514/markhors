@@ -425,7 +425,7 @@ const NewsTab = () => {
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
+                  className="w-full rounded-lg border border-white/20 bg-black px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
                 >
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
