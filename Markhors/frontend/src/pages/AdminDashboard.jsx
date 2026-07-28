@@ -1080,7 +1080,7 @@ const PlayersTab = () => {
             setError("");
             setIsFormOpen(true);
           }}
-          className="w-full sm:w-auto self-stretch sm:self-auto min-h-[44px] bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          className="w-full sm:w-auto self-stretch sm:self-auto min-h-11 bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 sm:px-6 py-2.5 rounded-lg transition-colors whitespace-nowrap"
         >
           + New Player
         </button>
@@ -1185,7 +1185,7 @@ const PlayersTab = () => {
         ) : (
           <>
             <div className="hidden overflow-x-auto sm:block">
-              <table className="w-full min-w-[720px] text-sm sm:text-base">
+              <table className="w-full min-w-180 text-sm sm:text-base">
                 <thead>
                   <tr className="border-b border-white/10 bg-white/5">
                     <th className="px-3 py-3 text-left font-semibold text-white sm:px-6 sm:py-4">Player</th>
@@ -1212,8 +1212,8 @@ const PlayersTab = () => {
                       <td className="px-3 py-3 text-gray-300 sm:px-6 sm:py-4">
                         {player.position || "Player"}
                       </td>
-                      <td className="max-w-[260px] px-3 py-3 text-gray-300 sm:px-6 sm:py-4">
-                        <p className="whitespace-pre-wrap break-words">{player.description}</p>
+                      <td className="max-w-65 px-3 py-3 text-gray-300 sm:px-6 sm:py-4">
+                        <p className="whitespace-pre-wrap wrap-break-word">{player.description}</p>
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
                         <div className="flex items-center justify-center gap-3">
@@ -1253,7 +1253,7 @@ const PlayersTab = () => {
                   </div>
 
                   <div className="text-sm text-gray-300">
-                    <p className="whitespace-pre-wrap break-words">{player.description}</p>
+                    <p className="whitespace-pre-wrap wrap-break-word">{player.description}</p>
                   </div>
 
                   <div className="flex flex-col gap-2 sm:flex-row">
