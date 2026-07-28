@@ -173,6 +173,32 @@ export const articleAPI = {
   },
 };
 
+export const bannerAPI = {
+  getBanner: async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/banner`);
+      if (!response.ok) throw new Error("Failed to fetch banner");
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching banner:", error);
+      return null;
+    }
+  },
+
+  updateBanner: async (formData) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/banner`, {
+        method: "PUT",
+        body: formData,
+      });
+      return await parseResponse(response);
+    } catch (error) {
+      console.error("Error updating banner:", error);
+      throw error;
+    }
+  },
+};
+
 export const playerAPI = {
   getPlayers: async () => {
     try {

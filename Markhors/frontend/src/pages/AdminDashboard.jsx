@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LogOut, Menu, X, BarChart3, FileText, Play, Users, Settings } from "lucide-react";
-import { videoAPI, articleAPI, playerAPI, academyAPI, groundAPI, tourAPI } from "../services/api";
+import { videoAPI, articleAPI, playerAPI, academyAPI, groundAPI, tourAPI, bannerAPI } from "../services/api";
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
     { id: "academy", label: "Academy Enrollments", icon: Users },
     { id: "ground", label: "Ground Bookings", icon: Users },
     { id: "tours", label: "Tours", icon: Settings },
-    { id: "settings", label: "Settings", icon: Settings },
+    { id: "settings", label: "Banner Settings", icon: Settings },
   ];
 
   return (
@@ -1909,6 +1909,188 @@ const ToursTab = () => {
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+const SettingsTab = () => {
+  const [slides, setSlides] = React.useState([
+    { title: "Chitral Markhors", subtitle: "Strength From The Mountains", image: "/8.jpg", existingImage: "/8.jpg", imageFile: null },
+    { title: "Our Home Our Pride", subtitle: "Representing Chitral With Passion", image: "/9.jpg", existingImage: "/9.jpg", imageFile: null },
+    { title: "One Team One Dream", subtitle: "Together We Fight Together We Win", image: "/11.jpg", existingImage: "/11.jpg", imageFile: null },
+  ]);
+  const [loading, setLoading] = React.useState(true);
+  const [saving, setSaving] = React.useState(false);
+  const [statusText, setStatusText] = React.useState("");
+
+  React.useEffect(() => {
+    const loadBanner = async () => {
+      try {
+        const banner = await bannerAPI.getBanner();
+        if (banner?.slides?.length) {
+          setSlides(
+            banner.slides.map((slide) => ({
+              title: slide.title || "",
+              subtitle: slide.subtitle || "",
+              image: slide.image || "/main-banner.png",
+              existingImage: slide.image || "/main-banner.png",
+              imageFile: null,
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error loading banner settings:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBanner();
+  }, []);
+
+  const handleFieldChange = (index, field, value) => {
+    setSlides((prev) => prev.map((slide, idx) => (idx === index ? { ...slide, [field]: value } : slide)));
+  };
+
+  const handleImageUpload = (index, event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+    setSlides((prev) =>
+      prev.map((slide, idx) =>
+        idx === index ? { ...slide, imageFile: file, image: previewUrl } : slide
+      )
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatusText("");
+    setSaving(true);
+
+    try {
+      const formData = new FormData();
+      slides.forEach((slide, index) => {
+        formData.append(`title${index}`, slide.title);
+        formData.append(`subtitle${index}`, slide.subtitle);
+        formData.append(`existingImage${index}`, slide.existingImage || slide.image || "/main-banner.png");
+        if (slide.imageFile) {
+          formData.append(`image${index}`, slide.imageFile);
+        }
+      });
+
+      const updatedBanner = await bannerAPI.updateBanner(formData);
+
+      if (updatedBanner?.slides?.length) {
+        setSlides(
+          updatedBanner.slides.map((slide) => ({
+            title: slide.title || "",
+            subtitle: slide.subtitle || "",
+            image: slide.image || "/main-banner.png",
+            existingImage: slide.image || "/main-banner.png",
+            imageFile: null,
+          }))
+        );
+      }
+
+      setStatusText("Banner updated successfully.");
+    } catch (error) {
+      console.error("Error updating banner:", error);
+      setStatusText("Failed to save banner updates.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6 max-w-6xl">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="text-white text-2xl font-bold">Banner Settings</h2>
+          <p className="mt-1 text-gray-400">Update the homepage banner slides and images.</p>
+        </div>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={saving || loading}
+          className="w-full sm:w-auto rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-bold px-5 py-2.5 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {saving ? "Saving..." : "Save Banner"}
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="rounded-xl border border-white/10 bg-white/5 p-8 text-center text-gray-300">Loading banner settings...</div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {statusText && (
+            <div className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-amber-200">{statusText}</div>
+          )}
+
+          {slides.map((slide, index) => (
+            <div key={index} className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Slide {index + 1}</h3>
+                  <p className="text-sm text-gray-400">Update the title, subtitle, and image for this slide.</p>
+                </div>
+                <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm text-amber-200">Preview</span>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-[1fr_280px] mt-5">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-white mb-2">Title</label>
+                    <input
+                      type="text"
+                      value={slide.title}
+                      onChange={(e) => handleFieldChange(index, "title", e.target.value)}
+                      className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-white mb-2">Subtitle</label>
+                    <input
+                      type="text"
+                      value={slide.subtitle}
+                      onChange={(e) => handleFieldChange(index, "subtitle", e.target.value)}
+                      className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-white mb-2">Banner Image</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(index, e)}
+                      className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-white focus:border-amber-400 focus:outline-none file:bg-amber-500 file:text-black file:border-0 file:rounded-full file:px-3 file:py-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/60">
+                  <img
+                    src={slide.image || slide.existingImage || "/main-banner.png"}
+                    alt={`Banner ${index + 1}`}
+                    className="h-56 w-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full sm:w-auto rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-bold px-5 py-2.5 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? "Saving..." : "Save Banner"}
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

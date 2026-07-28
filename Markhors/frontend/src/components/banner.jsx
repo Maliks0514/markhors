@@ -1,30 +1,48 @@
 import React, { useEffect, useState } from "react";
+import { bannerAPI } from "../services/api";
 
-const slides = [
+const defaultSlides = [
   {
     image: "/8.jpg",
     title: "Chitral Markhors",
     subtitle: "Strength From The Mountains",
-   
   },
-
   {
     image: "/9.jpg",
     title: "Our Home Our Pride",
     subtitle: "Representing Chitral With Passion",
-  
   },
-
   {
     image: "/11.jpg",
     title: "One Team One Dream",
     subtitle: "Together We Fight Together We Win",
-    
   },
 ];
 
 const Banner = () => {
+  const [slides, setSlides] = useState(defaultSlides);
   const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const fetchBanner = async () => {
+      try {
+        const banner = await bannerAPI.getBanner();
+        if (banner?.slides?.length) {
+          setSlides(
+            banner.slides.map((slide) => ({
+              image: slide.image || "/main-banner.png",
+              title: slide.title || "",
+              subtitle: slide.subtitle || "",
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error loading banner slides:", error);
+      }
+    };
+
+    fetchBanner();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,7 +50,7 @@ const Banner = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   return (
     <section className="relative h-126 overflow-hidden mt-20">

@@ -87,6 +87,7 @@ app.use("/api/players", require("./routes/players"));
 app.use("/api/academy", require("./routes/academy"));
 app.use("/api/ground", require("./routes/ground"));
 app.use("/api/tours", require("./routes/tours"));
+app.use("/api/banner", require("./routes/banner"));
 
 // API root + health endpoints
 app.get("/", (req, res) => {
